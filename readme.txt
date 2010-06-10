@@ -37,6 +37,17 @@ Upload the Sharebar plugin to your plugins directory, activate it and it should 
 4. The plugin in action (vertical bar).  If page is resized to less than 1000px, a vertical share bar appears under title.
 
 
+== Frequently Asked Questions ==
+
+= Why doesn't the vertical sharebar (next to post) work? =
+
+First, make sure the plugin is properly installed and if you're using manual mode, the sharebar code has been added to your single.php template.  If you're using auto mode, verify that the sharebar list is being added to your post in the source code (look for `<ul class='sharebar'>`).  If it's not in the source, there is a problem with the plugin settings or implementation.  If it is there, chances are the error is CSS-based - make sure the parent container element of the post (or the post element itself) does not have the `overflow:hidden;` CSS property applied to it, as it may sometimes render the sharebar invisible.
+
+= How do I get the sharebar to appear to the right of my blog? =
+
+Play with the Right Offset in the settings page of the plugin - this should include the total width of your sidebar or whatever elements are between your post and the right most edge of your blog.
+
+
 == Changelog ==
 
 = 1.0.1 =
