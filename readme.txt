@@ -34,6 +34,7 @@ Upload the Sharebar plugin to your plugins directory, activate it and it should 
 1. Main Plugin Page
 2. Plugin Settings Page
 3. Edit button page
+4. The plugin in action (vertical bar).  If page is resized to less than 1000px, a vertical share bar appears under title.
 
 
 == Changelog ==
