@@ -12,7 +12,7 @@ Sharebar adds a dynamic and fully customizable vertical box to the left of a blo
 
 Sharebar adds a dynamic and fully customizable vertical box to the left of a blog post that contains links/buttons to popular social networking sites.  For wide blogs, a vertical bar with popular sharing icons appears on the left of your post.  If the page is resized below 1000px (default), the vertical bar disappears and a horizontal sharebar appears under the post title.
 
-Big Buttons are used in the vertical Sharebar to the left of the post, while the Small Buttons are used in the horizontal Sharebar that appears under the post title (by default) if the width of the page is less than 1000px.
+Big Buttons are used in the vertical Sharebar to the left of the post, while the Small Buttons are used in the horizontal Sharebar that appears under the post title (by default) if the width of the page is less than 1000px (or whatever value you set).
 
 When Auto mode (enabled in settings) is ON, the Sharebars are added automatically.  When Auto mode is off, you must manually add the sharebar code to your template files:
 * Vertical (next to post) Sharebar: `<?php sharebar(); ?>`
@@ -39,4 +39,4 @@ Upload the Sharebar plugin to your plugins directory, activate it and it should 
 
 = 1.0.1 =
 * Fixed the_content so returns content properly
-* Added screenshots, corrected PHP syntax in readme
+* Added screenshots, updated readme file
