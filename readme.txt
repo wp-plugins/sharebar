@@ -1,5 +1,5 @@
 === Sharebar ===
-Contributors: Monjurul Dolon
+Contributors: mdolon
 Tags: sharing, social networks, marketing, social media, sharebar, sharebox
 Requires at least: 2.0
 Tested up to: 3.0
