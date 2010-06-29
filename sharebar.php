@@ -152,6 +152,6 @@ add_filter('the_content', 'sharebar_auto');
 add_action('wp_head', sharebar_header, 1);
 add_action('wp_footer', sharebar_footer, 1);
 add_action('activate_sharebar/sharebar.php', 'sharebar_install');
-add_action('admin_menu', 'sharebar_admin_actions');
+if ( current_user_can('manage_options') ) { add_action('admin_menu', 'sharebar_admin_actions'); }
 
 ?>
