@@ -1,4 +1,4 @@
-a<?php
+<?php
 /*
 Plugin Name: Sharebar
 Plugin URI: http://devgrow.com/sharebar-wordpress-plugin/
