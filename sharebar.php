@@ -3,7 +3,7 @@
 Plugin Name: Sharebar
 Plugin URI: http://devgrow.com/sharebar-wordpress-plugin/
 Description: Adds a dynamic bar with sharing icons (Facebook, Twitter, etc.) that changes based on browser size and page location.  More info and demo at: <a href="http://devgrow.com/sharebar-wordpress-plugin/">Sharebar Plugin Home</a>
-Version: 1.0.5
+Version: 1.0.6
 Author: Monjurul Dolon
 Author URI: http://mdolon.com/
 License: GPL2
@@ -91,8 +91,7 @@ function sharebar($print = true){
 	global $wpdb;
 	$str = '<ul id="sharebar">';
 	$results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar ORDER BY position, id ASC"); $str .= "\n";
-	foreach($results as $result)
-		$str .= '<li>'.sharebar_filter($result->big).'</li>';
+	foreach($results as $result){ $str .= '<li>'.sharebar_filter($result->big).'</li>'; }
 	$str .= '</ul>';
 	if($print) echo $str; else return $str;
 }
@@ -102,8 +101,7 @@ function sharebar_horizontal($print = true){
 		global $wpdb;
 		$str = '<ul id="sharebarx">';
 		$results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar ORDER BY position, id ASC"); $str .= "\n";
-		foreach($results as $result)
-			$str .= '<li>'.sharebar_filter($result->small).'</li>';
+		foreach($results as $result) { $str .= '<li>'.sharebar_filter($result->small).'</li>'; }
 		$str .= '</ul>';
 		if($print) echo $str; else return $str;
 	}
@@ -133,7 +131,7 @@ function sharebar_footer(){
 		?>
 		<script type="text/javascript">jQuery(document).ready(function($) { $('.sharebar').sharebar({horizontal:'<?php echo $hori; ?>',minwidth:<?php echo $width; ?>,position:'<?php echo $position; ?>',leftOffset:<?php echo $leftoffset; ?>,rightOffset:<?php echo $rightoffset; ?>}); });</script>
 		<!-- Sharebar Plugin by Monjurul Dolon (http://mdolon.com/) - more info at: http://devgrow.com/sharebar-wordpress-plugin -->
-		<?
+		<?php
 	}
 }
 

@@ -50,6 +50,9 @@ Play with the Right Offset in the settings page of the plugin - this should incl
 
 == Changelog ==
 
+= 1.0.6 =
+* Fixed XAMPP and PHP compatibility issue (was caused by PHP short tag, changed now to full)
+
 = 1.0.4 =
 * You can now add Sharebar to posts or pages in the settings
 
