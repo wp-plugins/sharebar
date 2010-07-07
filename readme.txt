@@ -50,6 +50,9 @@ Play with the Right Offset in the settings page of the plugin - this should incl
 
 == Changelog ==
 
+= 1.0.4 =
+* You can now add Sharebar to posts or pages in the settings
+
 = 1.0.1 =
 * Fixed the_content so returns content properly
 * Added screenshots, updated readme file
