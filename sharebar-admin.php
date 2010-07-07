@@ -28,10 +28,10 @@
 	elseif($do == 'delete') $wpdb->query("DELETE FROM ".$wpdb->prefix."sharebar WHERE id=$id LIMIT 1");
 	elseif($do == 'reset') sharebar_reset();
 	elseif($do == 'settings'){
-		$auto = $_POST['auto'] ? 1:0; $horizontal = $_POST['horizontal'] ? 1:0;
+		$auto_posts = $_POST['auto_posts'] ? 1:0; $auto_pages = $_POST['auto_pages'] ? 1:0; $horizontal = $_POST['horizontal'] ? 1:0;
 		$width = $_POST['width']; $position = $_POST['position'];
 		$leftoffset = $_POST['leftoffset']; $rightoffset = $_POST['rightoffset'];
-		sharebar_settings($auto, $horizontal, $width, $position, $leftoffset, $rightoffset);
+		sharebar_settings($auto_posts, $auto_pages, $horizontal, $width, $position, $leftoffset, $rightoffset);
 	}
 	
 	if($pos == 'moveup') $wpdb->query("UPDATE ".$wpdb->prefix."sharebar SET position=position-1 WHERE id='$id'");
@@ -148,10 +148,15 @@
 
 	<h3>Sharebar Settings</h3>
 	<form action="?page=<?php echo $_GET['page']; ?>" method="post">
+		<h4>Add Sharebar</h4>
+		<p>The following settings allow you to automatically add the Sharebars to your posts and pages.  If you'd like to add them manually, make sure that both are unchecked and paste the PHP code into your template instead.</p>
 		<p>
-			<input type="checkbox" name="auto" id="auto" value="true" class="checkbox" <?php if($auto) echo "checked"; ?> /><label for="auto">Automatically add Sharebar to posts? (only affects single posts)</label><br />
-			<small>If this option is disabled, you must manually add the horizontal and vertical bar code to your template(s).</small>
+			<input type="checkbox" name="auto_posts" id="auto_posts" value="true" class="checkbox" <?php if($auto_posts) echo "checked"; ?> /><label for="auto_posts">Automatically add Sharebar to posts? (only affects single posts)</label>
 		</p>
+		<p>
+			<input type="checkbox" name="auto_pages" id="auto_pages" value="true" class="checkbox" <?php if($auto_pages) echo "checked"; ?> /><label for="auto_pages">Automatically add Sharebar to pages? (only affects pages)</label>
+		</p>
+		<h4>Display Options</h4>
 		<p>
 			<input type="checkbox" name="horizontal" value="true" id="horizontal" class="checkbox" <?php if($horizontal) echo "checked"; ?> /><label for="horizontal">Display horizontal Sharebar if the page is resized to less than <em><?php echo $width; ?>px</em>?</label>
 		</p>
@@ -181,14 +186,19 @@
 
 	<p><strong>Sharebar</strong> adds a dynamic and fully customizable vertical box to the left of a blog post that contains links/buttons to popular social networking sites.</p>
 	<p><strong>Big Buttons</strong> are used in the vertical Sharebar to the left of the post, while the <strong>Small Buttons</strong> are used in the horizontal Sharebar that appears under the post title (by default) if the width of the page is less than <strong><?php echo $width; ?>px</strong>.</p>
-	<?php if($auto) echo "<p><strong>Auto mode is ON</strong>, so the buttons are added automatically.</p>";
-		else{
-			echo "<p><strong>Auto mode is OFF</strong>, so you must manually add the following code for the horizontal and vertical bars:</p>";
-			echo "<blockquote><strong>Vertical (next to post) Sharebar:</strong> ";
-			echo "<code>&lt;?php sharebar(); ?&gt;</code><br />";
-			echo "<strong>Horizontal Sharebar:</strong> ";
-			echo "<code>&lt;?php sharebar_horizontal(); ?&gt;</code></blockquote>";
-		}
+	<?php if($auto_posts || $auto_pages){
+			$amsg .= "<p><strong>Auto mode is ON</strong> - Sharebar will be automatically added to ";
+			if($auto_posts) $amsg .= "posts";
+			if($auto_posts && $auto_pages) $amsg .= " and ";
+			if($auto_pages) $amsg .= "pages";
+			$amsg .= ".";
+		}else
+			$amsg .= "<p><strong>Auto mode is OFF</strong>, so you must manually add the following code for the horizontal and vertical bars:</p>
+						<blockquote><strong>Vertical (next to post) Sharebar:</strong>
+						<code>&lt;?php sharebar(); ?&gt;</code><br />
+						<strong>Horizontal Sharebar:</strong>
+						<code>&lt;?php sharebar_horizontal(); ?&gt;</code></blockquote>";
+		echo $amsg;
 	?>
 	<p>You can also call an individual button in any template by using the following code (where size is either <em>big</em> or <em>small</em>):
 	<code>&lt;?php sharebar_button('name','size'); ?&gt;</code></p>

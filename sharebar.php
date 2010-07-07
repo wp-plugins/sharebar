@@ -1,9 +1,9 @@
-<?php
+a<?php
 /*
 Plugin Name: Sharebar
 Plugin URI: http://devgrow.com/sharebar-wordpress-plugin/
 Description: Adds a dynamic bar with sharing icons (Facebook, Twitter, etc.) that changes based on browser size and page location.  More info and demo at: <a href="http://devgrow.com/sharebar-wordpress-plugin/">Sharebar Plugin Home</a>
-Version: 1.0.3
+Version: 1.0.4
 Author: Monjurul Dolon
 Author URI: http://mdolon.com/
 License: GPL2
@@ -47,7 +47,8 @@ function sharebar_install(){
 			VALUES('4','digg', '<script type=\'text/javascript\'>(function() { var s = document.createElement(\'SCRIPT\'), s1 = document.getElementsByTagName(\'SCRIPT\')[0]; s.type = \'text/javascript\'; s.async = true; s.src = \'http://widgets.digg.com/buttons.js\'; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\'DiggThisButton DiggMedium\'></a>', '<script type=\'text/javascript\'>(function() { var s = document.createElement(\'SCRIPT\'), s1 = document.getElementsByTagName(\'SCRIPT\')[0]; s.type = \'text/javascript\'; s.async = true; s.src = \'http://widgets.digg.com/buttons.js\'; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\'DiggThisButton DiggCompact\'></a>')");
 		$wpdb->query("INSERT INTO $table(position,name, big, small)
 			VALUES('5','email', '<a href=\'mailto:?subject=[url]\' class=\'sharebar-button email\'>Email</a>', '<a href=\'mailto:?subject=[url]\' class=\'sharebar-button email\'>Email</a>')");
-		add_option('sharebar_auto', 1);
+		add_option('sharebar_auto_posts', 1);
+		add_option('sharebar_auto_pages', 1);
 		add_option('sharebar_horizontal', 1);
 		add_option('sharebar_minwidth','1000');
 		add_option('sharebar_position','left');
@@ -66,22 +67,22 @@ function sharebar_reset(){
 function sharebar_menu(){
     global $wpdb;
 
-	$auto = get_option('sharebar_auto'); $horizontal = get_option('sharebar_horizontal');
-	$width = get_option('sharebar_minwidth'); $position = get_option('sharebar_position');
+	$auto_posts = get_option('sharebar_auto_posts'); $auto_pages = get_option('sharebar_auto_pages');
+	$horizontal = get_option('sharebar_horizontal'); $width = get_option('sharebar_minwidth'); $position = get_option('sharebar_position');
 	$leftoffset = get_option('sharebar_leftoffset'); $rightoffset = get_option('sharebar_rightoffset');
 
     include 'sharebar-admin.php';
 }
 
-function sharebar_settings($auto, $horizontal, $width, $position, $leftoffset, $rightoffset){
-	update_option('sharebar_auto',$auto); update_option('sharebar_horizontal',$horizontal);
+function sharebar_settings($auto_posts, $auto_pages, $horizontal, $width, $position, $leftoffset, $rightoffset){
+	update_option('sharebar_auto_posts',$auto_posts); update_option('sharebar_auto_pages',$auto_pages); update_option('sharebar_horizontal',$horizontal);
 	update_option('sharebar_minwidth',$width); update_option('sharebar_position',$position);
 	update_option('sharebar_leftoffset',$leftoffset); update_option('sharebar_rightoffset',$rightoffset);
 }
 
 
 function sharebar_auto($content){
-	if(get_option('sharebar_auto') && (is_single() || is_page())){ $str = sharebar(false); $str .= sharebar_horizontal(false); }
+	if((get_option('sharebar_auto_posts') && is_single()) || (get_option('sharebar_auto_pages') && is_page())){ $str = sharebar(false); $str .= sharebar_horizontal(false); }
 	$newcontent = $str.$content;
 	return $newcontent;
 }
@@ -124,7 +125,7 @@ function sharebar_header(){
 }
 
 function sharebar_footer(){
-	$auto = get_option('sharebar_auto'); $horizontal = get_option('sharebar_horizontal');
+	$auto_posts = get_option('sharebar_auto_posts'); $auto_pages = get_option('sharebar_auto_pages'); $horizontal = get_option('sharebar_horizontal');
 	$width = get_option('sharebar_minwidth'); $position = get_option('sharebar_position');
 	$leftoffset = get_option('sharebar_leftoffset'); $rightoffset = get_option('sharebar_rightoffset');
 	if(function_exists('wp_enqueue_script') && (is_single() || is_page())) {
