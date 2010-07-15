@@ -29,9 +29,9 @@
 	elseif($do == 'reset') sharebar_reset();
 	elseif($do == 'settings'){
 		$auto_posts = $_POST['auto_posts'] ? 1:0; $auto_pages = $_POST['auto_pages'] ? 1:0; $horizontal = $_POST['horizontal'] ? 1:0;
-		$width = $_POST['width']; $position = $_POST['position'];
+		$width = $_POST['width']; $position = $_POST['position']; $credit = $_POST['credit'] ? 1:0;
 		$leftoffset = $_POST['leftoffset']; $rightoffset = $_POST['rightoffset'];
-		sharebar_settings($auto_posts, $auto_pages, $horizontal, $width, $position, $leftoffset, $rightoffset);
+		sharebar_settings($auto_posts, $auto_pages, $horizontal, $width, $position, $leftoffset, $rightoffset, $credit);
 	}
 	
 	if($pos == 'moveup') $wpdb->query("UPDATE ".$wpdb->prefix."sharebar SET position=position-1 WHERE id='$id'");
@@ -75,7 +75,7 @@
 
 <h2>Custom Sharebar</h2>
 
-<h4 class="h4title"><div class="alignleft">By <a href="http://mdolon.com/" target="_blank">Monjurul Dolon</a> of <a href="http://devgrow.com/" target="_blank">DevGrow</a></div><div class="alignright"><a href="?page=Sharebar">Home</a> - <a href="?page=Sharebar&t=settings">Settings</a> - <a href="../wp-content/plugins/sharebar/readme.txt" target="_blank">Changelog</a> - <a href="http://devgrow.com/sharebar-wordpress-plugin/">Support</a></div></h4>
+<h4 class="h4title"><div class="alignleft">By <a href="http://mdolon.com/" target="_blank">Monjurul Dolon</a> of <a href="http://devgrow.com/" target="_blank">DevGrow</a></div><div class="alignright"><a href="?page=Sharebar">Home</a> - <a href="?page=Sharebar&t=settings">Settings</a> - <a href="../wp-content/plugins/sharebar/readme.txt" target="_blank">Changelog</a> - <a href="http://devgrow.com/sharebar-wordpress-plugin/">Support</a> - <a href="?page=Sharebar&t=donate">Donate</a></div></h4>
 
 <?php if($task == 'edit' || $task == 'new'){?>
 
@@ -161,6 +161,9 @@
 			<input type="checkbox" name="horizontal" value="true" id="horizontal" class="checkbox" <?php if($horizontal) echo "checked"; ?> /><label for="horizontal">Display horizontal Sharebar if the page is resized to less than <em><?php echo $width; ?>px</em>?</label>
 		</p>
 		<p>
+			<input type="checkbox" name="credit" value="true" id="credit" class="checkbox" <?php if($credit) echo "checked"; ?> /><label for="credit">Display credit link back to the Sharebar plugin? If disabled, please consider <a href="?page=Sharebar&t=donate">donating</a>.</label>
+		</p>
+		<p>
 			<select name="position" id="position">
 				<option value="left"<?php if($position == 'left') echo " selected"; ?>>Left </option>
 				<option value="right"<?php if($position == 'right') echo " selected"; ?>>Right </option>
@@ -182,6 +185,24 @@
 	</form>
 	<a href="?page=<?php echo $_GET['page']; ?>" class="alignleft" style="margin: 2px 0 0 10px;">Cancel</a>
 		
+<?php }elseif($task == 'donate'){ ?>
+
+	<h3>Donate</h3>
+	<p>Sharebar is created by and maintained by just one person - <a href="http://twitter.com/mdolon">@mdolon</a>.  If you like the plugin, please consider donating a buck or two by clicking the button below:</p>
+	<p>
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+		<input type="hidden" name="cmd" value="_donations">
+		<input type="hidden" name="business" value="mdolon@gmail.com">
+		<input type="hidden" name="lc" value="US">
+		<input type="hidden" name="item_name" value="Sharebar WordPress Plugin">
+		<input type="hidden" name="no_note" value="0">
+		<input type="hidden" name="currency_code" value="USD">
+		<input type="hidden" name="bn" value="PP-DonationsBF:btn_donate_SM.gif:NonHostedGuest">
+		<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+		<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+		</form>
+	</p>
+
 <?php }else{ ?>
 
 	<p><strong>Sharebar</strong> adds a dynamic and fully customizable vertical box to the left of a blog post that contains links/buttons to popular social networking sites.</p>

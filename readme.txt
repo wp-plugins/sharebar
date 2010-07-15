@@ -50,6 +50,9 @@ Play with the Right Offset in the settings page of the plugin - this should incl
 
 == Changelog ==
 
+= 1.0.7 =
+* Fixed E-mail link and added option to show Sharebar credit
+
 = 1.0.6 =
 * Fixed XAMPP and PHP compatibility issue (was caused by PHP short tag, changed now to full)
 

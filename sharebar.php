@@ -38,18 +38,19 @@ function sharebar_install(){
 		);";
 		$wpdb->query($structure);
 		$wpdb->query("INSERT INTO $table(position,name, big, small)
-			VALUES('1','tweetmeme', '<script type=\'text/javascript\' src=\'http://tweetmeme.com/i/scripts/button.js\'></script>', '<script type=\'text/javascript\'>tweetmeme_style = \'compact\';</script><script type=\'text/javascript\' src=\'http://tweetmeme.com/i/scripts/button.js\'></script>')");
+			VALUES('1','tweetmeme', '<script type=\"text/javascript\" src=\"http://tweetmeme.com/i/scripts/button.js\"></script>', '<script type=\"text/javascript\">tweetmeme_style = \"compact\";</script><script type=\"text/javascript\" src=\"http://tweetmeme.com/i/scripts/button.js\"></script>')");
 		$wpdb->query("INSERT INTO $table(position,name, big, small)
-			VALUES('2','facebook', '<a name=\'fb_share\' type=\'box_count\' href=\'http://www.facebook.com/sharer.php\'>Share</a><script src=\'http://static.ak.fbcdn.net/connect.php/js/FB.Share\' type=\'text/javascript\'></script>', '<a name=\'fb_share\' type=\'button_count\' href=\'http://www.facebook.com/sharer.php\'>Share</a><script src=\'http://static.ak.fbcdn.net/connect.php/js/FB.Share\' type=\'text/javascript\'></script>')");
+			VALUES('2','facebook', '<a name=\"fb_share\" type=\"box_count\" href=\"http://www.facebook.com/sharer.php\">Share</a><script src=\"http://static.ak.fbcdn.net/connect.php/js/FB.Share\" type=\"text/javascript\"></script>', '<a name=\"fb_share\" type=\"button_count\" href=\"http://www.facebook.com/sharer.php\">Share</a><script src=\"http://static.ak.fbcdn.net/connect.php/js/FB.Share\" type=\"text/javascript\"></script>')");
 		$wpdb->query("INSERT INTO $table(position,name, big, small)
-			VALUES('3','buzz', '<a title=\'Post to Google Buzz\' class=\'google-buzz-button\' href=\'http://www.google.com/buzz/post\' data-button-style=\'normal-count\'></a><script type=\'text/javascript\' src=\'http://www.google.com/buzz/api/button.js\'></script>', '<a title=\'Post to Google Buzz\' class=\'google-buzz-button\' href=\'http://www.google.com/buzz/post\' data-button-style=\'small-count\'></a><script type=\'text/javascript\' src=\'http://www.google.com/buzz/api/button.js\'></script>')");
+			VALUES('3','buzz', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"normal-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"small-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>')");
 		$wpdb->query("INSERT INTO $table(position,name, big, small)
-			VALUES('4','digg', '<script type=\'text/javascript\'>(function() { var s = document.createElement(\'SCRIPT\'), s1 = document.getElementsByTagName(\'SCRIPT\')[0]; s.type = \'text/javascript\'; s.async = true; s.src = \'http://widgets.digg.com/buttons.js\'; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\'DiggThisButton DiggMedium\'></a>', '<script type=\'text/javascript\'>(function() { var s = document.createElement(\'SCRIPT\'), s1 = document.getElementsByTagName(\'SCRIPT\')[0]; s.type = \'text/javascript\'; s.async = true; s.src = \'http://widgets.digg.com/buttons.js\'; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\'DiggThisButton DiggCompact\'></a>')");
+			VALUES('4','digg', '<script type=\"text/javascript\">(function() { var s = document.createElement(\"SCRIPT\"), s1 = document.getElementsByTagName(\"SCRIPT\")[0]; s.type = \"text/javascript\"; s.async = true; s.src = \"http://widgets.digg.com/buttons.js\"; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\"DiggThisButton DiggMedium\"></a>', '<script type=\"text/javascript\">(function() { var s = document.createElement(\"SCRIPT\"), s1 = document.getElementsByTagName(\"SCRIPT\")[0]; s.type = \"text/javascript\"; s.async = true; s.src = \"http://widgets.digg.com/buttons.js\"; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\"DiggThisButton DiggCompact\"></a>')");
 		$wpdb->query("INSERT INTO $table(position,name, big, small)
-			VALUES('5','email', '<a href=\'mailto:?subject=[url]\' class=\'sharebar-button email\'>Email</a>', '<a href=\'mailto:?subject=[url]\' class=\'sharebar-button email\'>Email</a>')");
+			VALUES('5','email', '<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>', '<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>')");
 		add_option('sharebar_auto_posts', 1);
 		add_option('sharebar_auto_pages', 1);
 		add_option('sharebar_horizontal', 1);
+		add_option('sharebar_credit', 1);
 		add_option('sharebar_minwidth','1000');
 		add_option('sharebar_position','left');
 		add_option('sharebar_leftoffset','20');
@@ -67,16 +68,16 @@ function sharebar_reset(){
 function sharebar_menu(){
     global $wpdb;
 
-	$auto_posts = get_option('sharebar_auto_posts'); $auto_pages = get_option('sharebar_auto_pages');
+	$auto_posts = get_option('sharebar_auto_posts'); $auto_pages = get_option('sharebar_auto_pages'); $credit = get_option('sharebar_credit');
 	$horizontal = get_option('sharebar_horizontal'); $width = get_option('sharebar_minwidth'); $position = get_option('sharebar_position');
 	$leftoffset = get_option('sharebar_leftoffset'); $rightoffset = get_option('sharebar_rightoffset');
 
     include 'sharebar-admin.php';
 }
 
-function sharebar_settings($auto_posts, $auto_pages, $horizontal, $width, $position, $leftoffset, $rightoffset){
+function sharebar_settings($auto_posts, $auto_pages, $horizontal, $width, $position, $leftoffset, $rightoffset, $credit){
 	update_option('sharebar_auto_posts',$auto_posts); update_option('sharebar_auto_pages',$auto_pages); update_option('sharebar_horizontal',$horizontal);
-	update_option('sharebar_minwidth',$width); update_option('sharebar_position',$position);
+	update_option('sharebar_minwidth',$width); update_option('sharebar_position',$position); update_option('sharebar_credit',$credit);
 	update_option('sharebar_leftoffset',$leftoffset); update_option('sharebar_rightoffset',$rightoffset);
 }
 
@@ -89,9 +90,11 @@ function sharebar_auto($content){
 
 function sharebar($print = true){
 	global $wpdb;
+	$credit = get_option('sharebar_credit');
 	$str = '<ul id="sharebar">';
 	$results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar ORDER BY position, id ASC"); $str .= "\n";
 	foreach($results as $result){ $str .= '<li>'.sharebar_filter($result->big).'</li>'; }
+	if($credit) $str .= '<li class="credit"><a href="http://devgrow.com/sharebar" target="_blank">Sharebar</a></li>';
 	$str .= '</ul>';
 	if($print) echo $str; else return $str;
 }
@@ -124,7 +127,7 @@ function sharebar_header(){
 
 function sharebar_footer(){
 	$auto_posts = get_option('sharebar_auto_posts'); $auto_pages = get_option('sharebar_auto_pages'); $horizontal = get_option('sharebar_horizontal');
-	$width = get_option('sharebar_minwidth'); $position = get_option('sharebar_position');
+	$width = get_option('sharebar_minwidth'); $position = get_option('sharebar_position'); $credit = get_option('sharebar_credit');
 	$leftoffset = get_option('sharebar_leftoffset'); $rightoffset = get_option('sharebar_rightoffset');
 	if(function_exists('wp_enqueue_script') && (is_single() || is_page())) {
 		if($horizontal)	$hori = 'true'; else $hori = 'false';
