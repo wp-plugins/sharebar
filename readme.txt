@@ -1,6 +1,6 @@
 === Sharebar ===
 Contributors: mdolon
-Donate link: https://www.paypal.com/us/cgi-bin/webscr?cmd=_flow&SESSION=E_ejxa82MVvUSWzCZkBL2xfD6mnyGiKEA0cc5YBClN4jvZ3ldW6THFjhroq&dispatch=5885d80a13c0db1f8e263663d3faee8d66edfb0b39be7838e3b204755610594d
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2G5ZENMCH62CN
 Tags: sharing, social networks, marketing, social media, sharebar, sharebox
 Requires at least: 2.0
 Tested up to: 3.0
