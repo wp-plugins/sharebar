@@ -23,9 +23,10 @@ When Auto mode (enabled in settings) is ON, the Sharebars are added automaticall
 You can also call an individual button in any template by using the following code (where size is either big or small): `<?php sharebar_button('name','size'); ?>`
 
 Full instructions and example can be found at: http://devgrow.com/sharebar-wordpress-plugin/
+
 Follow me on Twitter: http://devgrow.com/ThinkDevGrow
 
-Also, if you use and like the plugin, please rate it!  ->
+**Also, if you use and like the plugin, please rate it!  ->**
 
 
 == Installation ==
