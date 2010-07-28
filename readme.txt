@@ -55,7 +55,10 @@ Play with the Right Offset in the settings page of the plugin - this should incl
 
 == Changelog ==
 
-= 1.0.7 =
+= 1.0.9 =
+* Changed the way JavaScript loads to hopefully adapt to more themes
+
+= 1.0.8 =
 * Moved Sharebar JS function to header (from footer) since some themes are miss wp_footer hook
 
 = 1.0.7 =

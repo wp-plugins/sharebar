@@ -3,7 +3,7 @@
 Plugin Name: Sharebar
 Plugin URI: http://devgrow.com/sharebar-wordpress-plugin/
 Description: Adds a dynamic bar with sharing icons (Facebook, Twitter, etc.) that changes based on browser size and page location.  More info and demo at: <a href="http://devgrow.com/sharebar-wordpress-plugin/">Sharebar Plugin Home</a>
-Version: 1.0.8
+Version: 1.0.9
 Author: Monjurul Dolon
 Author URI: http://mdolon.com/
 License: GPL2
@@ -116,11 +116,8 @@ function sharebar_button($name, $size = 'big'){
 	if($size == 'big') echo $item->big; else echo $item->small;
 }
 
-function sharebar_js(){
-	if(function_exists('wp_enqueue_script') && (is_single() || is_page())) {
-		wp_enqueue_script('jquery');
-		wp_enqueue_script('sharebarjs', get_bloginfo('wpurl').'/wp-content/plugins/sharebar/js/sharebar.js',array(),false,true);
-	}
+function sharebar_init(){
+	if(!is_admin()) wp_enqueue_script('sharebar', get_bloginfo('wpurl').'/wp-content/plugins/sharebar/js/sharebar.js',array('jquery'));
 }
 
 function sharebar_header(){
@@ -146,8 +143,8 @@ function sharebar_admin_actions(){
 }
 
 add_filter('the_content', 'sharebar_auto');
-add_action('wp_head', sharebar_js, 1);
-add_action('wp_head', sharebar_header, 10);
+add_action('init', sharebar_init);
+add_action('wp_head', sharebar_header);
 add_action('activate_sharebar/sharebar.php', 'sharebar_install');
 add_action('admin_menu', 'sharebar_admin_actions');
 
