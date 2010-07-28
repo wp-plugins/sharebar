@@ -3,7 +3,7 @@
 Plugin Name: Sharebar
 Plugin URI: http://devgrow.com/sharebar-wordpress-plugin/
 Description: Adds a dynamic bar with sharing icons (Facebook, Twitter, etc.) that changes based on browser size and page location.  More info and demo at: <a href="http://devgrow.com/sharebar-wordpress-plugin/">Sharebar Plugin Home</a>
-Version: 1.0.7
+Version: 1.0.8
 Author: Monjurul Dolon
 Author URI: http://mdolon.com/
 License: GPL2
@@ -116,25 +116,21 @@ function sharebar_button($name, $size = 'big'){
 	if($size == 'big') echo $item->big; else echo $item->small;
 }
 
-function sharebar_header(){
-
+function sharebar_js(){
 	if(function_exists('wp_enqueue_script') && (is_single() || is_page())) {
 		wp_enqueue_script('jquery');
-		wp_enqueue_script('sharebar', get_bloginfo('wpurl').'/wp-content/plugins/sharebar/js/sharebar.js',array(),false,true);
-		echo '<link rel="stylesheet" href="'.get_bloginfo('wpurl').'/wp-content/plugins/sharebar/css/sharebar.css" type="text/css" media="screen" />';
+		wp_enqueue_script('sharebarjs', get_bloginfo('wpurl').'/wp-content/plugins/sharebar/js/sharebar.js',array(),false,true);
 	}
 }
 
-function sharebar_footer(){
+function sharebar_header(){
 	$auto_posts = get_option('sharebar_auto_posts'); $auto_pages = get_option('sharebar_auto_pages'); $horizontal = get_option('sharebar_horizontal');
 	$width = get_option('sharebar_minwidth'); $position = get_option('sharebar_position'); $credit = get_option('sharebar_credit');
 	$leftoffset = get_option('sharebar_leftoffset'); $rightoffset = get_option('sharebar_rightoffset');
 	if(function_exists('wp_enqueue_script') && (is_single() || is_page())) {
+		echo '<link rel="stylesheet" href="'.get_bloginfo('wpurl').'/wp-content/plugins/sharebar/css/sharebar.css" type="text/css" media="screen" />';
 		if($horizontal)	$hori = 'true'; else $hori = 'false';
-		?>
-		<script type="text/javascript">jQuery(document).ready(function($) { $('.sharebar').sharebar({horizontal:'<?php echo $hori; ?>',minwidth:<?php echo $width; ?>,position:'<?php echo $position; ?>',leftOffset:<?php echo $leftoffset; ?>,rightOffset:<?php echo $rightoffset; ?>}); });</script>
-		<!-- Sharebar Plugin by Monjurul Dolon (http://mdolon.com/) - more info at: http://devgrow.com/sharebar-wordpress-plugin -->
-		<?php
+		echo "\n"; ?><script type="text/javascript">jQuery(document).ready(function($) { $('.sharebar').sharebar({horizontal:'<?php echo $hori; ?>',minwidth:<?php echo $width; ?>,position:'<?php echo $position; ?>',leftOffset:<?php echo $leftoffset; ?>,rightOffset:<?php echo $rightoffset; ?>}); });</script><?php echo "\n"; ?><!-- Sharebar Plugin by Monjurul Dolon (http://mdolon.com/) - more info at: http://devgrow.com/sharebar-wordpress-plugin --><?php echo "\n"; ?><?php
 	}
 }
 
@@ -150,8 +146,8 @@ function sharebar_admin_actions(){
 }
 
 add_filter('the_content', 'sharebar_auto');
-add_action('wp_head', sharebar_header, 1);
-add_action('wp_footer', sharebar_footer, 1);
+add_action('wp_head', sharebar_js, 1);
+add_action('wp_head', sharebar_header, 10);
 add_action('activate_sharebar/sharebar.php', 'sharebar_install');
 add_action('admin_menu', 'sharebar_admin_actions');
 

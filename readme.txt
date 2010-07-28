@@ -1,5 +1,6 @@
 === Sharebar ===
 Contributors: mdolon
+Donate link: https://www.paypal.com/us/cgi-bin/webscr?cmd=_flow&SESSION=E_ejxa82MVvUSWzCZkBL2xfD6mnyGiKEA0cc5YBClN4jvZ3ldW6THFjhroq&dispatch=5885d80a13c0db1f8e263663d3faee8d66edfb0b39be7838e3b204755610594d
 Tags: sharing, social networks, marketing, social media, sharebar, sharebox
 Requires at least: 2.0
 Tested up to: 3.0
@@ -22,6 +23,9 @@ When Auto mode (enabled in settings) is ON, the Sharebars are added automaticall
 You can also call an individual button in any template by using the following code (where size is either big or small): `<?php sharebar_button('name','size'); ?>`
 
 Full instructions and example can be found at: http://devgrow.com/sharebar-wordpress-plugin/
+Follow me on Twitter: http://devgrow.com/ThinkDevGrow
+
+Also, if you use and like the plugin, please rate it!  ->
 
 
 == Installation ==
@@ -49,6 +53,9 @@ Play with the Right Offset in the settings page of the plugin - this should incl
 
 
 == Changelog ==
+
+= 1.0.7 =
+* Moved Sharebar JS function to header (from footer) since some themes are miss wp_footer hook
 
 = 1.0.7 =
 * Fixed E-mail link and added option to show Sharebar credit
