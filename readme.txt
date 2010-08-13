@@ -55,6 +55,9 @@ Play with the Right Offset in the settings page of the plugin - this should incl
 
 == Changelog ==
 
+= 1.1.0 =
+* Fixed a small mistake in the JavaScript, added a fix for Facebook button margin (thanks to frychiko)
+
 = 1.0.9 =
 * Changed the way JavaScript loads to hopefully adapt to more themes
 

@@ -1,5 +1,5 @@
 #sharebar { display: none; position: absolute; width: 60px; float: left; background: #fff; padding: 0; text-align: center; border: 1px solid #ccc; list-style: none; margin: 0; z-index: 99; }
-#sharebar li { display: block; margin: 5px; padding: 0;}
+#sharebar li { display: block; margin: 5px; padding: 0; overflow: hidden; }
 #sharebarx { display: none; list-style: none; width: 100%; float: left; margin: 0 0 10px; padding: 0; }
 #sharebarx a { line-height: 14px; text-decoration: none; }
 #sharebarx li { float: left; margin-right: 20px; line-height: 18px; }
