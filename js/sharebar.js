@@ -5,18 +5,18 @@
  *  More information: http://devgrow.com/sharebar
  */
 jQuery.fn.sharebar = function(options) {
-	var defaults = {horizontal: true, minwidth: 1000, position: 'left', leftOffset: 20, rightOffset: 10};
+	var defaults = {horizontal: true, swidth: 65, minwidth: 1000, position: 'left', leftOffset: 20, rightOffset: 10};
 	var opts = jQuery.extend(defaults, options); var o = jQuery.meta ? jQuery.extend({}, opts, jQueryjQuery.data()) : opts;
 
 	var w = jQuery(window).width();
 	var sharebar = jQuery('#sharebar');
 	var sharebarx = jQuery('#sharebarx');
 	var parent = jQuery(sharebar).parent().width();
-	var sw = jQuery(sharebar).width();
 	var start = sharebar_init();
 
 	function sharebar_init(){
-		if (o.position == 'left') jQuery(sharebar).css('marginLeft',(0-sw-o.leftOffset));
+		jQuery(sharebar).css('width',o.swidth+'px');
+		if (o.position == 'left') jQuery(sharebar).css('marginLeft',(0-o.swidth-o.leftOffset));
 		else {
 			jQuery(sharebar).css('marginLeft',(parent+o.rightOffset));
 		}

@@ -31,7 +31,8 @@
 		$auto_posts = $_POST['auto_posts'] ? 1:0; $auto_pages = $_POST['auto_pages'] ? 1:0; $horizontal = $_POST['horizontal'] ? 1:0;
 		$width = $_POST['width']; $position = $_POST['position']; $credit = $_POST['credit'] ? 1:0;
 		$leftoffset = $_POST['leftoffset']; $rightoffset = $_POST['rightoffset'];
-		sharebar_settings($auto_posts, $auto_pages, $horizontal, $width, $position, $leftoffset, $rightoffset, $credit);
+		$swidth = $_POST['swidth']; $twitter_username = $_POST['twitter_username'];
+		sharebar_settings($auto_posts, $auto_pages, $horizontal, $width, $position, $leftoffset, $rightoffset, $credit, $swidth, $twitter_username);
 	}
 	
 	if($pos == 'moveup') $wpdb->query("UPDATE ".$wpdb->prefix."sharebar SET position=position-1 WHERE id='$id'");
@@ -81,6 +82,7 @@
 
 	<h3><?php if($task == 'edit') echo "Edit"; else echo "Add New"; ?> Button</h3>
 	<p>You can use HTML, Javascript or inline CSS for the button code.  Additionally, the following variables are automatically extracted from the post and can be used in your code: <strong>[url]</strong>, <strong>[title]</strong>, and <strong>[author]</strong>.</p>
+	<p>If you have set your Twitter username in the <a href="?page=Sharebar&t=settings">settings</a>, that will also be available using <strong>[twitter]</strong>.</p>
 	<?php
 		if($task == 'edit'){
 			echo '<table class="thebutton">';
@@ -179,9 +181,19 @@
 		<p>
 			<input type="text" name="width" id="width" class="minitext" value="<?php echo $width; ?>" /><label for="width">Minimum width in pixels required to show vertical Sharebar to the left of post</label>
 		</p>
+		<h4>Customize</h4>
+		<p>
+			<label for="swidth">Sharebar Width:</label>
+			<input type="text" name="swidth" id="swidth" class="minitext" value="<?php echo $swidth; ?>" />
+		</p>
+		<p>
+			<label for="twitter_username">Twitter Username:</label>
+			<input type="text" name="twitter_username" id="twitter_username" class="smalltext" value="<?php echo $twitter_username; ?>" />
+		</p>
+		<br />
 		<input type="hidden" name="do" value="settings" />
 		<input type="hidden" name="status" value="Sharebar settings updated." />
-		<input type="submit" value="Update Settings" class="alignleft" />
+		<input type="submit" value="Update Settings" class="alignleft button-primary" />
 	</form>
 	<a href="?page=<?php echo $_GET['page']; ?>" class="alignleft" style="margin: 2px 0 0 10px;">Cancel</a>
 		

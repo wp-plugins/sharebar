@@ -3,7 +3,7 @@
 Plugin Name: Sharebar
 Plugin URI: http://devgrow.com/sharebar-wordpress-plugin/
 Description: Adds a dynamic bar with sharing icons (Facebook, Twitter, etc.) that changes based on browser size and page location.  More info and demo at: <a href="http://devgrow.com/sharebar-wordpress-plugin/">Sharebar Plugin Home</a>
-Version: 1.1.0
+Version: 1.1.1
 Author: Monjurul Dolon
 Author URI: http://mdolon.com/
 License: GPL2
@@ -38,13 +38,13 @@ function sharebar_install(){
 		);";
 		$wpdb->query($structure);
 		$wpdb->query("INSERT INTO $table(position,name, big, small)
-			VALUES('1','tweetmeme', '<script type=\"text/javascript\" src=\"http://tweetmeme.com/i/scripts/button.js\"></script>', '<script type=\"text/javascript\">tweetmeme_style = \"compact\";</script><script type=\"text/javascript\" src=\"http://tweetmeme.com/i/scripts/button.js\"></script>')");
+			VALUES('1','digg', '<script type=\"text/javascript\">(function() { var s = document.createElement(\'SCRIPT\'), s1 = document.getElementsByTagName(\'SCRIPT\')[0]; s.type = \'text/javascript\'; s.async = true; s.src = \'http://widgets.digg.com/buttons.js\'; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\"DiggThisButton DiggMedium\"></a>', '<script type=\"text/javascript\">(function() { var s = document.createElement(\'SCRIPT\'), s1 = document.getElementsByTagName(\'SCRIPT\')[0]; s.type = \'text/javascript\'; s.async = true; s.src = \'http://widgets.digg.com/buttons.js\'; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\"DiggThisButton DiggCompact\"></a>')");
 		$wpdb->query("INSERT INTO $table(position,name, big, small)
-			VALUES('2','facebook', '<a name=\"fb_share\" type=\"box_count\" href=\"http://www.facebook.com/sharer.php\">Share</a><script src=\"http://static.ak.fbcdn.net/connect.php/js/FB.Share\" type=\"text/javascript\"></script>', '<a name=\"fb_share\" type=\"button_count\" href=\"http://www.facebook.com/sharer.php\">Share</a><script src=\"http://static.ak.fbcdn.net/connect.php/js/FB.Share\" type=\"text/javascript\"></script>')");
+			VALUES('2','twitter', '<a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-count=\"vertical\" data-via=\"[twitter]\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script>', '<a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-count=\"horizontal\" data-via=\"[twitter]\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script>')");
 		$wpdb->query("INSERT INTO $table(position,name, big, small)
-			VALUES('3','buzz', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"normal-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"small-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>')");
+			VALUES('3','facebook', '<a name=\"fb_share\" type=\"box_count\" href=\"http://www.facebook.com/sharer.php\">Share</a><script src=\"http://static.ak.fbcdn.net/connect.php/js/FB.Share\" type=\"text/javascript\"></script>', '<a name=\"fb_share\" type=\"button_count\" href=\"http://www.facebook.com/sharer.php\">Share</a><script src=\"http://static.ak.fbcdn.net/connect.php/js/FB.Share\" type=\"text/javascript\"></script>')");
 		$wpdb->query("INSERT INTO $table(position,name, big, small)
-			VALUES('4','digg', '<script type=\"text/javascript\">(function() { var s = document.createElement(\"SCRIPT\"), s1 = document.getElementsByTagName(\"SCRIPT\")[0]; s.type = \"text/javascript\"; s.async = true; s.src = \"http://widgets.digg.com/buttons.js\"; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\"DiggThisButton DiggMedium\"></a>', '<script type=\"text/javascript\">(function() { var s = document.createElement(\"SCRIPT\"), s1 = document.getElementsByTagName(\"SCRIPT\")[0]; s.type = \"text/javascript\"; s.async = true; s.src = \"http://widgets.digg.com/buttons.js\"; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\"DiggThisButton DiggCompact\"></a>')");
+			VALUES('4','buzz', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"normal-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"small-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>')");
 		$wpdb->query("INSERT INTO $table(position,name, big, small)
 			VALUES('5','email', '<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>', '<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>')");
 		add_option('sharebar_auto_posts', 1);
@@ -55,6 +55,8 @@ function sharebar_install(){
 		add_option('sharebar_position','left');
 		add_option('sharebar_leftoffset','20');
 		add_option('sharebar_rightoffset','10');
+		add_option('sharebar_swidth','65');
+		add_option('sharebar_twitter_username','ThinkDevGrow');
 	}
 }
 
@@ -71,14 +73,16 @@ function sharebar_menu(){
 	$auto_posts = get_option('sharebar_auto_posts'); $auto_pages = get_option('sharebar_auto_pages'); $credit = get_option('sharebar_credit');
 	$horizontal = get_option('sharebar_horizontal'); $width = get_option('sharebar_minwidth'); $position = get_option('sharebar_position');
 	$leftoffset = get_option('sharebar_leftoffset'); $rightoffset = get_option('sharebar_rightoffset');
+	$swidth = get_option('sharebar_swidth'); $twitter_username = get_option('sharebar_twitter_username');
 
     include 'sharebar-admin.php';
 }
 
-function sharebar_settings($auto_posts, $auto_pages, $horizontal, $width, $position, $leftoffset, $rightoffset, $credit){
+function sharebar_settings($auto_posts, $auto_pages, $horizontal, $width, $position, $leftoffset, $rightoffset, $credit, $swidth, $twitter_username){
 	update_option('sharebar_auto_posts',$auto_posts); update_option('sharebar_auto_pages',$auto_pages); update_option('sharebar_horizontal',$horizontal);
 	update_option('sharebar_minwidth',$width); update_option('sharebar_position',$position); update_option('sharebar_credit',$credit);
 	update_option('sharebar_leftoffset',$leftoffset); update_option('sharebar_rightoffset',$rightoffset);
+	update_option('sharebar_swidth',$swidth); update_option('sharebar_twitter_username',$twitter_username);
 }
 
 
@@ -124,17 +128,18 @@ function sharebar_header(){
 	$auto_posts = get_option('sharebar_auto_posts'); $auto_pages = get_option('sharebar_auto_pages'); $horizontal = get_option('sharebar_horizontal');
 	$width = get_option('sharebar_minwidth'); $position = get_option('sharebar_position'); $credit = get_option('sharebar_credit');
 	$leftoffset = get_option('sharebar_leftoffset'); $rightoffset = get_option('sharebar_rightoffset');
+	$swidth = get_option('sharebar_swidth'); $twitter_username = get_option('sharebar_twitter_username');
 	if(function_exists('wp_enqueue_script') && (is_single() || is_page())) {
 		echo '<link rel="stylesheet" href="'.get_bloginfo('wpurl').'/wp-content/plugins/sharebar/css/sharebar.css" type="text/css" media="screen" />';
 		if($horizontal)	$hori = 'true'; else $hori = 'false';
-		echo "\n"; ?><script type="text/javascript">jQuery(document).ready(function($) { $('.sharebar').sharebar({horizontal:'<?php echo $hori; ?>',minwidth:<?php echo $width; ?>,position:'<?php echo $position; ?>',leftOffset:<?php echo $leftoffset; ?>,rightOffset:<?php echo $rightoffset; ?>}); });</script><?php echo "\n"; ?><!-- Sharebar Plugin by Monjurul Dolon (http://mdolon.com/) - more info at: http://devgrow.com/sharebar-wordpress-plugin --><?php echo "\n"; ?><?php
+		echo "\n"; ?><script type="text/javascript">jQuery(document).ready(function($) { $('.sharebar').sharebar({horizontal:'<?php echo $hori; ?>',swidth:'<?php echo $swidth; ?>',minwidth:<?php echo $width; ?>,position:'<?php echo $position; ?>',leftOffset:<?php echo $leftoffset; ?>,rightOffset:<?php echo $rightoffset; ?>}); });</script><?php echo "\n"; ?><!-- Sharebar Plugin by Monjurul Dolon (http://mdolon.com/) - more info at: http://devgrow.com/sharebar-wordpress-plugin --><?php echo "\n"; ?><?php
 	}
 }
 
 function sharebar_filter($input){
 	global $post;
-	$code = array('[title]','[url]','[author]');
-	$values = array($post->post_title,get_permalink(),get_the_author());
+	$code = array('[title]','[url]','[author]','[twitter]');
+	$values = array($post->post_title,get_permalink(),get_the_author(),get_option('sharebar_twitter_username'));
 	return str_replace($code,$values,$input);
 }
  

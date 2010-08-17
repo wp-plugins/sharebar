@@ -55,6 +55,12 @@ Play with the Right Offset in the settings page of the plugin - this should incl
 
 == Changelog ==
 
+= 1.1.1 =
+* Added new Twitter button
+* Had to move Digg button to top in order to prevent the KB927917 error in IE8, please reset buttons if you're having that issue
+* Added option to customize width of Sharebar
+* Added option to set Twitter username and use that in buttons using [twitter] code
+
 = 1.1.0 =
 * Fixed a small mistake in the JavaScript, added a fix for Facebook button margin (thanks to frychiko)
 
