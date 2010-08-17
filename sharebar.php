@@ -3,7 +3,7 @@
 Plugin Name: Sharebar
 Plugin URI: http://devgrow.com/sharebar-wordpress-plugin/
 Description: Adds a dynamic bar with sharing icons (Facebook, Twitter, etc.) that changes based on browser size and page location.  More info and demo at: <a href="http://devgrow.com/sharebar-wordpress-plugin/">Sharebar Plugin Home</a>
-Version: 1.1.1
+Version: 1.1.2
 Author: Monjurul Dolon
 Author URI: http://mdolon.com/
 License: GPL2
@@ -31,22 +31,33 @@ function sharebar_install(){
 		$structure = "CREATE TABLE $table (
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
 		position mediumint(9) NOT NULL,
+		enabled int(1) NOT NULL,
 		name VARCHAR(80) NOT NULL,
 		big text NOT NULL,
 		small text NULL,
 		UNIQUE KEY id (id)
 		);";
 		$wpdb->query($structure);
-		$wpdb->query("INSERT INTO $table(position,name, big, small)
-			VALUES('1','digg', '<script type=\"text/javascript\">(function() { var s = document.createElement(\'SCRIPT\'), s1 = document.getElementsByTagName(\'SCRIPT\')[0]; s.type = \'text/javascript\'; s.async = true; s.src = \'http://widgets.digg.com/buttons.js\'; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\"DiggThisButton DiggMedium\"></a>', '<script type=\"text/javascript\">(function() { var s = document.createElement(\'SCRIPT\'), s1 = document.getElementsByTagName(\'SCRIPT\')[0]; s.type = \'text/javascript\'; s.async = true; s.src = \'http://widgets.digg.com/buttons.js\'; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\"DiggThisButton DiggCompact\"></a>')");
-		$wpdb->query("INSERT INTO $table(position,name, big, small)
-			VALUES('2','twitter', '<a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-count=\"vertical\" data-via=\"[twitter]\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script>', '<a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-count=\"horizontal\" data-via=\"[twitter]\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script>')");
-		$wpdb->query("INSERT INTO $table(position,name, big, small)
-			VALUES('3','facebook', '<a name=\"fb_share\" type=\"box_count\" href=\"http://www.facebook.com/sharer.php\">Share</a><script src=\"http://static.ak.fbcdn.net/connect.php/js/FB.Share\" type=\"text/javascript\"></script>', '<a name=\"fb_share\" type=\"button_count\" href=\"http://www.facebook.com/sharer.php\">Share</a><script src=\"http://static.ak.fbcdn.net/connect.php/js/FB.Share\" type=\"text/javascript\"></script>')");
-		$wpdb->query("INSERT INTO $table(position,name, big, small)
-			VALUES('4','buzz', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"normal-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"small-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>')");
-		$wpdb->query("INSERT INTO $table(position,name, big, small)
-			VALUES('5','email', '<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>', '<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>')");
+		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
+			VALUES('1','1','digg', '<script type=\"text/javascript\">(function() { var s = document.createElement(\'SCRIPT\'), s1 = document.getElementsByTagName(\'SCRIPT\')[0]; s.type = \'text/javascript\'; s.async = true; s.src = \'http://widgets.digg.com/buttons.js\'; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\"DiggThisButton DiggMedium\"></a>', '<script type=\"text/javascript\">(function() { var s = document.createElement(\'SCRIPT\'), s1 = document.getElementsByTagName(\'SCRIPT\')[0]; s.type = \'text/javascript\'; s.async = true; s.src = \'http://widgets.digg.com/buttons.js\'; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\"DiggThisButton DiggCompact\"></a>')");
+		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
+			VALUES('1','2','twitter', '<a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-count=\"vertical\" data-via=\"[twitter]\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script>', '<a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-count=\"horizontal\" data-via=\"[twitter]\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script>')");
+		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
+			VALUES('1','3','facebook', '<a name=\"fb_share\" type=\"box_count\" href=\"http://www.facebook.com/sharer.php\">Share</a><script src=\"http://static.ak.fbcdn.net/connect.php/js/FB.Share\" type=\"text/javascript\"></script>', '<a name=\"fb_share\" type=\"button_count\" href=\"http://www.facebook.com/sharer.php\">Share</a><script src=\"http://static.ak.fbcdn.net/connect.php/js/FB.Share\" type=\"text/javascript\"></script>')");
+		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
+			VALUES('1','4','buzz', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"normal-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"small-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>')");
+		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
+			VALUES('0','5','reddit', '<script type=\"text/javascript\" src=\"http://reddit.com/static/button/button2.js\"></script>', '<script type=\"text/javascript\" src=\"http://reddit.com/static/button/button1.js\"></script>')");
+		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
+			VALUES('0','6','dzone', '<script language=\"javascript\" src=\"http://widgets.dzone.com/links/widgets/zoneit.js\"></script>', '<script language=\"javascript\" src=\"http://widgets.dzone.com/links/widgets/zoneit.js\"></script>')");
+		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
+			VALUES('0','7','stumbleupon', '<script src=\"http://www.stumbleupon.com/hostedbadge.php?s=5\"></script>', '<script src=\"http://www.stumbleupon.com/hostedbadge.php?s=2\"></script>')");
+		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
+			VALUES('0','8','yahoo', '<script type=\"text/javascript\" src=\"http://d.yimg.com/ds/badge2.js\" badgetype=\"square\">[url]</script>', '<script type=\"text/javascript\" src=\"http://d.yimg.com/ds/badge2.js\" badgetype=\"small-votes\">[url]</script>')");
+		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
+			VALUES('0','9','designfloat', '<script type=\"text/javascript\">submit_url = \'[url]\';</script><script type=\"text/javascript\" src=\"http://www.designfloat.com/evb2/button.php\"></script>', '<script type=\"text/javascript\">submit_url = \'[url]\';</script><script type=\"text/javascript\" src=\"http://www.designfloat.com/evb/button.php\"></script>')");
+		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
+			VALUES('1','10','email', '<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>', '<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>')");
 		add_option('sharebar_auto_posts', 1);
 		add_option('sharebar_auto_pages', 1);
 		add_option('sharebar_horizontal', 1);
@@ -96,7 +107,7 @@ function sharebar($print = true){
 	global $wpdb;
 	$credit = get_option('sharebar_credit');
 	$str = '<ul id="sharebar">';
-	$results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar ORDER BY position, id ASC"); $str .= "\n";
+	$results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar WHERE enabled=1 ORDER BY position, id ASC"); $str .= "\n";
 	foreach($results as $result){ $str .= '<li>'.sharebar_filter($result->big).'</li>'; }
 	if($credit) $str .= '<li class="credit"><a href="http://devgrow.com/sharebar" target="_blank">Sharebar</a></li>';
 	$str .= '</ul>';
@@ -107,7 +118,7 @@ function sharebar_horizontal($print = true){
 	if(get_option('sharebar_horizontal')){
 		global $wpdb;
 		$str = '<ul id="sharebarx">';
-		$results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar ORDER BY position, id ASC"); $str .= "\n";
+		$results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar WHERE enabled=1 ORDER BY position, id ASC"); $str .= "\n";
 		foreach($results as $result) { $str .= '<li>'.sharebar_filter($result->small).'</li>'; }
 		$str .= '</ul>';
 		if($print) echo $str; else return $str;
@@ -118,6 +129,16 @@ function sharebar_button($name, $size = 'big'){
 	global $wpdb;
 	$item = $wpdb->get_row("SELECT * FROM ".$wpdb->prefix."sharebar WHERE name='$name'");
 	if($size == 'big') echo $item->big; else echo $item->small;
+}
+
+function sharebar_update_button($id, $uptask){
+	global $wpdb;
+	if($uptask == 'enable')
+		$wpdb->query("UPDATE ".$wpdb->prefix."sharebar SET enabled='1' WHERE id='$id'");
+	elseif($uptask == 'disable')
+		$wpdb->query("UPDATE ".$wpdb->prefix."sharebar SET enabled='0' WHERE id='$id'");
+	elseif($uptask == 'delete')
+		$wpdb->query("DELETE FROM ".$wpdb->prefix."sharebar WHERE id=$id LIMIT 1");
 }
 
 function sharebar_init(){

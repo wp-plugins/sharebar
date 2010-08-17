@@ -23,7 +23,7 @@
 	
 	if($id)	$item = $wpdb->get_row("SELECT * FROM ".$wpdb->prefix."sharebar WHERE id=$id");
 
-	if($do == 'update') $wpdb->query("UPDATE ".$wpdb->prefix."sharebar SET position='".$_POST['position']."', name='".$_POST['name']."', big='".$_POST['big']."', small='".$_POST['small']."' WHERE id='$id'");
+	if($do == 'update') $wpdb->query("UPDATE ".$wpdb->prefix."sharebar SET enabled='".$_POST['enabled']."', position='".$_POST['position']."', name='".$_POST['name']."', big='".$_POST['big']."', small='".$_POST['small']."' WHERE id='$id'");
 	elseif($do == 'add') $wpdb->query("INSERT INTO ".$wpdb->prefix."sharebar (position, name, big, small) VALUES('".$_POST['position']."','".$_POST['name']."', '".$_POST['big']."', '".$_POST['small']."')");
 	elseif($do == 'delete') $wpdb->query("DELETE FROM ".$wpdb->prefix."sharebar WHERE id=$id LIMIT 1");
 	elseif($do == 'reset') sharebar_reset();
@@ -33,6 +33,26 @@
 		$leftoffset = $_POST['leftoffset']; $rightoffset = $_POST['rightoffset'];
 		$swidth = $_POST['swidth']; $twitter_username = $_POST['twitter_username'];
 		sharebar_settings($auto_posts, $auto_pages, $horizontal, $width, $position, $leftoffset, $rightoffset, $credit, $swidth, $twitter_username);
+	}elseif($do == 'update-all'){
+		$buttons = $_POST['buttons'];
+		$uptask = $_POST['update-task'];
+		if($buttons){
+			foreach ($buttons as $button)
+				sharebar_update_button($button,$uptask);
+			$status = "Buttons have been ".$uptask."d";
+		}else
+			$status = "No buttons selected.";
+	}
+	if($task == "linkback"){
+		if($credit){
+			$current = "disabled";
+			update_option('sharebar_credit','0');
+		}else{
+			$current = "enabled";
+			update_option('sharebar_credit','1');
+		}
+		$status = 'Linkback '.$current;
+		$credit = get_option('sharebar_credit');
 	}
 	
 	if($pos == 'moveup') $wpdb->query("UPDATE ".$wpdb->prefix."sharebar SET position=position-1 WHERE id='$id'");
@@ -44,14 +64,22 @@
 	.h4title { margin:0 0 20px;overflow:hidden; }
 	.wrap form label.wide { width: 100%; float: left; padding: 2px; font-weight: bold; }
 	.wrap form .text { width: 400px; }
-	.wrap form .mediumtext { width: 250px; }
+	.wrap form .mediumtext { width: 160px; }
+	.wrap form .smalltext { width: 120px; }
 	.wrap form .minitext { width: 50px; margin-right: 5px; }
 	.wrap form .checkbox { margin-right: 5px; }
+	.wrap form .checkfield { margin: 32px 0 0 15px; }
 	.wrap form p.mediumtext { margin-right: 20px; }
 	.thebutton { text-align: center; overflow: hidden; background: #fff; padding: 10px; border: 1px solid #ccc; }
 	.thebutton td { padding: 0 15px; }
 	.thebutton .name { padding: 0 0 10px; }
-	.add-button { margin: 15px 0 0; }
+	.right-button { margin: 15px 0 0 15px; }
+	.info-box { width: 400px; float: left; padding: 0 10px; background: #fff; border: 1px solid #ccc; }
+	.info-box-right { width: 250px; float: right; padding: 0 10px; background: #fff; border: 1px solid #ccc; }
+	.info-box-right p { font-size: 11px; }
+	.info-box-right ul { font-size: 11px; list-style-type: square; list-style-position: inside; }
+	.info-box-right ul li { margin: 0 0 15px; }
+	.sb-divider { clear: both; width: 100%: float: left; border-bottom: 5px solid #ddd; display: block; height: 20px;}
 
 	#sharebar-tl{width:700px;margin:0;padding:0;}
 	#sharebar-tl caption{width:700px;font:italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;text-align:right;padding:0 0 5px;}
@@ -63,12 +91,22 @@
 	#sharebar-tl th.specalt{border-left:1px solid #C1DAD7;border-top:0;background:#f5fafa no-repeat;font:bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;color:#797268;}
 	#sharebar-tl td, #sharebar-tl th { text-align: center; }
 	#sharebar-tl tr { margin-bottom: 10px; }
+	#sharebar-tl tr.disabled td { background: #f2f2f2; }
 	#sharebar-tl .leftj { text-align: left; }
 	.sharebar-button { font-size: 11px; font-family: Verdana, Arial; padding: 2px 4px; background: #f7f7f7; color: #444; border: 1px solid #ddd; display: block; }
 	.sharebar-button:hover { border-color: #aaa; }
 	.FBConnectButton_Small{background-position:-5px -232px !important;border-left:1px solid #1A356E;}
 	.FBConnectButton_Text{margin-left:12px !important ;padding:2px 3px 3px !important;}
 </style>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	jQuery('.toggle-all').click(function(){
+		var checkboxes = jQuery('form').find(':checkbox');
+		checkboxes.attr('checked', !checkboxes.attr('checked'));
+		return false;
+	});
+});
+</script>
 
 <div class="wrap">
 
@@ -91,6 +129,7 @@
 			echo "<td>".$item->small."</td></tr>";
 			echo '</table>';
 		}
+		if($item->enabled) $enabled = " checked='true'";
 	?>
 	<form action="?page=<?php echo $_GET['page']; ?>" method="post">
 		<p class="mediumtext alignleft">
@@ -101,6 +140,11 @@
 			<label for="position" class="wide">Position:</label>
 			<input type="text" name="position" id="position" value="<?php echo $item->position; ?>" class="smalltext" />
 		</p>
+		<p class="checkfield alignleft">
+			<input type="hidden" name="enabled" value="0" />
+			<input type="checkbox" name="enabled" id="enabled" value="1" <?php echo $enabled; ?> /> <label for="enabled">Enabled?</label>
+		</p>
+		<div style="clear:both;"></div>
 		<p>
 			<label for="big" class="wide">Big Button:</label>
 			<textarea name="big" id="big" class="text" rows=5><?php echo $item->big; ?></textarea>
@@ -112,7 +156,7 @@
 		<input type="hidden" name="do" value="<?php if($task == 'edit') echo "update"; else echo "add"; ?>" />
 		<input type="hidden" name="id" value="<?php echo $item->id; ?>" />
 		<input type="hidden" name="status" value="Share button has been <?php if($task == 'edit') echo "updated"; else echo "added"; ?>." />
-		<input type="submit" value="<?php if($task == 'edit') echo "Update"; else echo "Add"; ?>" class="alignleft" />
+		<input type="submit" value="<?php if($task == 'edit') echo "Update Button"; else echo "Add Button"; ?>" class="alignleft button-primary" />
 	</form>
 	<a href="?page=<?php echo $_GET['page']; ?>" class="alignleft" style="margin: 2px 0 0 10px;">Cancel</a>
 		
@@ -131,7 +175,7 @@
 		<input type="hidden" name="do" value="delete" />
 		<input type="hidden" name="id" value="<?php echo $item->id; ?>" />
 		<input type="hidden" name="status" value="Button has been deleted." />
-		<input type="submit" value="Delete" class="alignleft" />
+		<input type="submit" value="Delete" class="alignleft button-primary" />
 	</form>
 	<a href="?page=<?php echo $_GET['page']; ?>" class="alignleft" style="margin: 2px 0 0 10px;">Cancel</a>
 		
@@ -142,7 +186,7 @@
 	<form action="?page=<?php echo $_GET['page']; ?>" method="post">
 		<input type="hidden" name="do" value="reset" />
 		<input type="hidden" name="status" value="All buttons have been reset to inital configuration." />
-		<input type="submit" value="Reset ALL Buttons" class="alignleft" />
+		<input type="submit" value="Reset ALL Buttons" class="alignleft button-primary" />
 	</form>
 	<a href="?page=<?php echo $_GET['page']; ?>" class="alignleft" style="margin: 2px 0 0 10px;">Cancel</a>
 		
@@ -151,7 +195,7 @@
 	<h3>Sharebar Settings</h3>
 	<form action="?page=<?php echo $_GET['page']; ?>" method="post">
 		<h4>Add Sharebar</h4>
-		<p>The following settings allow you to automatically add the Sharebars to your posts and pages.  If you'd like to add them manually, make sure that both are unchecked and paste the PHP code into your template instead.</p>
+		<p>The following settings allow you to automatically add the Sharebars to your posts and pages.  If you would like to add them manually, make sure that both are unchecked and paste the PHP code into your template instead.</p>
 		<p>
 			<input type="checkbox" name="auto_posts" id="auto_posts" value="true" class="checkbox" <?php if($auto_posts) echo "checked"; ?> /><label for="auto_posts">Automatically add Sharebar to posts? (only affects single posts)</label>
 		</p>
@@ -217,37 +261,80 @@
 
 <?php }else{ ?>
 
-	<p><strong>Sharebar</strong> adds a dynamic and fully customizable vertical box to the left of a blog post that contains links/buttons to popular social networking sites.</p>
-	<p><strong>Big Buttons</strong> are used in the vertical Sharebar to the left of the post, while the <strong>Small Buttons</strong> are used in the horizontal Sharebar that appears under the post title (by default) if the width of the page is less than <strong><?php echo $width; ?>px</strong>.</p>
-	<?php if($auto_posts || $auto_pages){
-			$amsg .= "<p><strong>Auto mode is ON</strong> - Sharebar will be automatically added to ";
-			if($auto_posts) $amsg .= "posts";
-			if($auto_posts && $auto_pages) $amsg .= " and ";
-			if($auto_pages) $amsg .= "pages";
-			$amsg .= ".";
-		}else
-			$amsg .= "<p><strong>Auto mode is OFF</strong>, so you must manually add the following code for the horizontal and vertical bars:</p>
-						<blockquote><strong>Vertical (next to post) Sharebar:</strong>
-						<code>&lt;?php sharebar(); ?&gt;</code><br />
-						<strong>Horizontal Sharebar:</strong>
-						<code>&lt;?php sharebar_horizontal(); ?&gt;</code></blockquote>";
-		echo $amsg;
-	?>
-	<p>You can also call an individual button in any template by using the following code (where size is either <em>big</em> or <em>small</em>):
-	<code>&lt;?php sharebar_button('name','size'); ?&gt;</code></p>
-	<h3 class="alignleft">Active Buttons:</h3>
-	<a href="?page=Sharebar&t=new" class="button alignright add-button">Add New Button</a>
+	<div class="info-box">
+		<p><strong>Sharebar</strong> adds a dynamic and fully customizable vertical box to the left of a blog post that contains links/buttons to popular social networking sites.</p>
+		<p><strong>Big Buttons</strong> are used in the vertical Sharebar to the left of the post, while the <strong>Small Buttons</strong> are used in the horizontal Sharebar that appears under the post title (by default) if the width of the page is less than <strong><?php echo $width; ?>px</strong>.</p>
+		<?php if($auto_posts || $auto_pages){
+				$amsg .= "<p><strong>Auto mode is ON</strong> - Sharebar will be automatically added to ";
+				if($auto_posts) $amsg .= "posts";
+				if($auto_posts && $auto_pages) $amsg .= " and ";
+				if($auto_pages) $amsg .= "pages";
+				$amsg .= ".";
+			}else
+				$amsg .= "<p><strong>Auto mode is OFF</strong>, so you must manually add the following code for the horizontal and vertical bars:</p>
+							<blockquote><strong>Vertical (next to post) Sharebar:</strong>
+							<code>&lt;?php sharebar(); ?&gt;</code><br />
+							<strong>Horizontal Sharebar:</strong>
+							<code>&lt;?php sharebar_horizontal(); ?&gt;</code></blockquote>";
+			echo $amsg;
+		?>
+		<p>You can also call an individual button in any template by using the following code (where size is either <em>big</em> or <em>small</em>):</p>
+		<p><code>&lt;?php sharebar_button('name','size'); ?&gt;</code></p>
+	</div>
+	<div class="info-box-right">
+		<h3>Support Us</h3>
+		<p>If you like Sharebar and find it useful, please consider showing your support by:</p>
+		<?php
+			$current = $credit ? 'Disable':'Enable';
+		?>
+		<ul>
+			<li>Link to us in the Sharebar <a href="?page=<?php echo $_GET['page']; ?>&t=linkback" class="button"><?php echo $current; ?></a></li>
+			<li>Send out a <a href="http://twitter.com/home?status=Just installed the Sharebar plugin by @mdolon - check it out! http://bit.ly/c98znW" target="_blank" class="button">Tweet</a> to your friends</li>
+			<li>Give us a <a href="http://wordpress.org/extend/plugins/sharebar/" target="_blank" class="button">perfect rating</a></li>
+			<li>Buy us a coffee by <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2G5ZENMCH62CN" class="button">donating</a></li>
+			<li>Follow us on <a href="http://twitter.com/ThinkDevGrow" target="_blank">Twitter</a> &amp; visit our <a href="http://devgrow.com/" target="_blank">blog</a></li>
+		</ul>
+	</div>
+	<div class="sb-divider"></div>
+	
+	<h3 class="alignleft">Available Buttons:</h3>
+	<div class="alignright">
+		<a href="?page=<?php echo $_GET['page']; ?>&t=reset" class="alignleft button right-button">Reset Buttons</a><a href="?page=Sharebar&t=new" class="button-primary alignleft right-button">Add New Button</a>
+	</div>
+	
+	<form action="?page=<?php echo $_GET['page']; ?>" method="post">
 	<table id="sharebar-tl">
-		<thead><tr><th class='leftj'>Name</th><th>Position</th><th>Big Button</th><th>Small Button</th><th>Actions</th></tr></thead>
+		<thead><tr><th><a href="/" class="toggle-all">All</a></th><th class='leftj'>Name</th><th>Position</th><th>Big Button</th><th>Small Button</th><th>Actions</th></tr></thead>
 		<tbody>	
 		<?php $results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar ORDER BY position, id ASC"); echo "\n";
 		foreach($results as $result){
-			echo "\t\t<tr><td class='leftj'>".$result->name."</td><td>".$result->position."<a href='?page=Sharebar&pos=moveup&id=".$result->id."'><img src='../wp-content/plugins/sharebar/images/up.gif'/></a><a href='?page=Sharebar&pos=movedown&id=".$result->id."'><img src='../wp-content/plugins/sharebar/images/down.gif'/></a></td><td>".$result->big."</td><td>".$result->small."</td><td><a href='?page=".$_GET['page']."&t=edit&id=".$result->id."'>Edit</a> | <a href='?page=".$_GET['page']."&t=delete&id=".$result->id."'>Delete</a></td></tr>\n";
+			if(!$result->enabled){
+				$dis = " class='disabled'";
+				$name = '<em>'.$result->name.'</em>';
+			}else{
+				$dis = "";
+				$name = $result->name;
+			}
+			echo "\t\t<tr$dis><td><input type='checkbox' name='buttons[]' id='buttons' value='".$result->id."' class='checkbox c23' /></td><td class='leftj'>".$name."</td><td>".$result->position."<a href='?page=Sharebar&pos=moveup&id=".$result->id."'><img src='../wp-content/plugins/sharebar/images/up.gif'/></a><a href='?page=Sharebar&pos=movedown&id=".$result->id."'><img src='../wp-content/plugins/sharebar/images/down.gif'/></a></td><td>".$result->big."</td><td>".$result->small."</td><td><a href='?page=".$_GET['page']."&t=edit&id=".$result->id."'>Edit</a> | <a href='?page=".$_GET['page']."&t=delete&id=".$result->id."'>Delete</a></td></tr>\n";
 		} ?>
 		</tbody>
-	</table> 
-	<a href="?page=<?php echo $_GET['page']; ?>&t=reset">Reset Buttons</a>
-	
+	</table>
+	<div class="alignleft">
+		<p>
+			<label for="update-task">With Selected:</label>
+			<select id="update-task" name="update-task">
+				<option value="enable">Enable</option>
+				<option value="disable">Disable</option>
+				<option value="delete">Delete</option>
+			</select>
+			<input type="hidden" name="do" value="update-all">
+			<input type="submit" class="button" value="Update" />
+		</p>
+	</div>
+	<div class="alignright">
+		<p><small style="color:#aaa;">grey = disabled / white = enabled</small></p>
+	</div>
+	</form>
 <?php } ?>
 
 </div>

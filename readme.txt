@@ -55,6 +55,11 @@ Play with the Right Offset in the settings page of the plugin - this should incl
 
 == Changelog ==
 
+= 1.1.2 =
+* Added a host of new buttons
+* Added ability to enable/disable buttons and mass delete buttons
+* Added support info
+
 = 1.1.1 =
 * Added new Twitter button
 * Had to move Digg button to top in order to prevent the KB927917 error in IE8, please reset buttons if you're having that issue
