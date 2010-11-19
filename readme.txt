@@ -24,7 +24,7 @@ You can also call an individual button in any template by using the following co
 
 Full instructions and example can be found at: http://devgrow.com/sharebar-wordpress-plugin/
 
-Follow me on Twitter: http://devgrow.com/ThinkDevGrow
+Follow me on Twitter: http://twitter.com/ThinkDevGrow
 
 **Also, if you use and like the plugin, please rate it!  ->**
 

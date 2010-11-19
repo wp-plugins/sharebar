@@ -3,7 +3,7 @@
 Plugin Name: Sharebar
 Plugin URI: http://devgrow.com/sharebar-wordpress-plugin/
 Description: Adds a dynamic bar with sharing icons (Facebook, Twitter, etc.) that changes based on browser size and page location.  More info and demo at: <a href="http://devgrow.com/sharebar-wordpress-plugin/">Sharebar Plugin Home</a>
-Version: 1.1.2
+Version: 1.1.3
 Author: Monjurul Dolon
 Author URI: http://mdolon.com/
 License: GPL2
@@ -104,14 +104,17 @@ function sharebar_auto($content){
 }
 
 function sharebar($print = true){
-	global $wpdb;
-	$credit = get_option('sharebar_credit');
-	$str = '<ul id="sharebar">';
-	$results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar WHERE enabled=1 ORDER BY position, id ASC"); $str .= "\n";
-	foreach($results as $result){ $str .= '<li>'.sharebar_filter($result->big).'</li>'; }
-	if($credit) $str .= '<li class="credit"><a href="http://devgrow.com/sharebar" target="_blank">Sharebar</a></li>';
-	$str .= '</ul>';
-	if($print) echo $str; else return $str;
+	global $wpdb, $post;
+	$sharebar_hide = get_post_meta($post->ID, 'sharebar_hide', true);
+	if(empty($sharebar_hide)) {
+		$credit = get_option('sharebar_credit');
+		$str = '<ul id="sharebar">';
+		$results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar WHERE enabled=1 ORDER BY position, id ASC"); $str .= "\n";
+		foreach($results as $result){ $str .= '<li>'.sharebar_filter($result->big).'</li>'; }
+		if($credit) $str .= '<li class="credit"><a href="http://devgrow.com/sharebar" target="_blank">Sharebar</a></li>';
+		$str .= '</ul>';
+		if($print) echo $str; else return $str;
+	}
 }
 
 function sharebar_horizontal($print = true){
@@ -168,10 +171,40 @@ function sharebar_admin_actions(){
 	if(current_user_can('manage_options')) add_options_page("Sharebar", "Sharebar", 1, "Sharebar", "sharebar_menu");
 }
 
+function sharebar_custom_boxes() {
+    add_meta_box( 'Sharebar', 'Sharebar Settings', 'sharebar_post_options', 'post', 'side', 'low');
+    add_meta_box( 'Sharebar', 'Sharebar Settings', 'sharebar_post_options', 'page', 'side', 'low');
+}
+
+function sharebar_post_options(){
+	global $post;
+	$sharebar_hide = get_post_meta($post->ID, 'sharebar_hide', true); ?>
+	<p>
+		<input name="sharebar_hide" id="sharebar_hide" type="checkbox" <?php checked(true, $sharebar_hide, true) ?> />
+		<label for="sharebar_hide">Disable Sharebar on this post?</label>
+	</p>
+	<?php
+}
+
+function sharebar_save_post_options($post_id) {
+	if (!isset($_POST['sharebar_hide']) || empty($_POST['sharebar_hide'])) {
+		delete_post_meta($post_id, 'sharebar_hide');
+		return;
+	}
+	$post = get_post($post_id);
+	if (!$post || $post->post_type == 'revision') return;
+	update_post_meta($post_id, 'sharebar_hide', true);
+}
+
+
 add_filter('the_content', 'sharebar_auto');
 add_action('init', sharebar_init);
 add_action('wp_head', sharebar_header);
 add_action('activate_sharebar/sharebar.php', 'sharebar_install');
 add_action('admin_menu', 'sharebar_admin_actions');
+add_action('add_meta_boxes', 'sharebar_custom_boxes');
+add_action('draft_post', 'sharebar_save_post_options');
+add_action('publish_post', 'sharebar_save_post_options');
+add_action('save_post', 'sharebar_save_post_options');
 
 ?>
