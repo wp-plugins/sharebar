@@ -55,6 +55,15 @@ Play with the Right Offset in the settings page of the plugin - this should incl
 
 == Changelog ==
 
+= 1.2 =
+* Added ability to change color of vertical widget from admin panel
+* Added ShareThis buttons
+* Changed Facebook Share to Facebook Likes
+
+= 1.1.3 =
+* Added ability to disable or enable on any page or post
+* Fixed few minor issues
+
 = 1.1.2 =
 * Added a host of new buttons
 * Added ability to enable/disable buttons and mass delete buttons
