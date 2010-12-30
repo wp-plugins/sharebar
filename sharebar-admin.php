@@ -28,11 +28,11 @@
 	elseif($do == 'delete') $wpdb->query("DELETE FROM ".$wpdb->prefix."sharebar WHERE id=$id LIMIT 1");
 	elseif($do == 'reset') sharebar_reset();
 	elseif($do == 'settings'){
-		$auto_posts = $_POST['auto_posts'] ? 1:0; $auto_pages = $_POST['auto_pages'] ? 1:0; $horizontal = $_POST['horizontal'] ? 1:0;
-		$width = $_POST['width']; $position = $_POST['position']; $credit = $_POST['credit'] ? 1:0;
-		$leftoffset = $_POST['leftoffset']; $rightoffset = $_POST['rightoffset'];
-		$swidth = $_POST['swidth']; $twitter_username = $_POST['twitter_username'];
-		sharebar_settings($auto_posts, $auto_pages, $horizontal, $width, $position, $leftoffset, $rightoffset, $credit, $swidth, $twitter_username);
+		$binaries = array("auto_posts","auto_pages","horizontal","credit");
+		foreach($binaries as $binary) $_POST[$binary] = $_POST[$binary] ? 1:0;
+		$_POST['width'] = $_POST['width'] ? $_POST['width']:1000;
+		sharebar_settings($_POST);
+		foreach($sharebar_options as $option) $$option = get_option('sharebar_'.$option);
 	}elseif($do == 'update-all'){
 		$buttons = $_POST['buttons'];
 		$uptask = $_POST['update-task'];
@@ -193,7 +193,7 @@ jQuery(document).ready(function(){
 <?php }elseif($task == 'settings'){ ?>
 
 	<h3>Sharebar Settings</h3>
-	<form action="?page=<?php echo $_GET['page']; ?>" method="post">
+	<form action="?page=<?php echo $_GET['page']; ?>&t=settings" method="post">
 		<h4>Add Sharebar</h4>
 		<p>The following settings allow you to automatically add the Sharebars to your posts and pages.  If you would like to add them manually, make sure that both are unchecked and paste the PHP code into your template instead.</p>
 		<p>
@@ -223,7 +223,7 @@ jQuery(document).ready(function(){
 			<input type="text" name="rightoffset" id="rightoffset" class="minitext" value="<?php echo $rightoffset; ?>" /><label for="rightoffset">Right Offset (used when positioned to right)</label>
 		</p>
 		<p>
-			<input type="text" name="width" id="width" class="minitext" value="<?php echo $width; ?>" /><label for="width">Minimum width in pixels required to show vertical Sharebar to the left of post</label>
+			<input type="text" name="width" id="width" class="minitext" value="<?php echo $width; ?>" /><label for="width">Minimum width in pixels required to show vertical Sharebar to the left of post (cannot be blank)</label>
 		</p>
 		<h4>Customize</h4>
 		<p>
@@ -233,6 +233,14 @@ jQuery(document).ready(function(){
 		<p>
 			<label for="twitter_username">Twitter Username:</label>
 			<input type="text" name="twitter_username" id="twitter_username" class="smalltext" value="<?php echo $twitter_username; ?>" />
+		</p>
+		<p>
+			<label for="twitter_username">Sharebar Background Color:</label>
+			<input type="text" name="sbg" id="sbg" class="smalltext" value="<?php echo $sbg; ?>" />
+		</p>
+		<p>
+			<label for="twitter_username">Sharebar Border Color:</label>
+			<input type="text" name="sborder" id="sborder" class="smalltext" value="<?php echo $sborder; ?>" />
 		</p>
 		<br />
 		<input type="hidden" name="do" value="settings" />

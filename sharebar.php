@@ -3,7 +3,7 @@
 Plugin Name: Sharebar
 Plugin URI: http://devgrow.com/sharebar-wordpress-plugin/
 Description: Adds a dynamic bar with sharing icons (Facebook, Twitter, etc.) that changes based on browser size and page location.  More info and demo at: <a href="http://devgrow.com/sharebar-wordpress-plugin/">Sharebar Plugin Home</a>
-Version: 1.1.3
+Version: 1.2
 Author: Monjurul Dolon
 Author URI: http://mdolon.com/
 License: GPL2
@@ -23,6 +23,7 @@ License: GPL2
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+$sharebar_options = array("auto_posts","auto_pages","horizontal","width","position","credit","leftoffset","rightoffset","swidth","twitter_username","sbg","sborder");
 
 function sharebar_install(){
     global $wpdb;
@@ -43,21 +44,23 @@ function sharebar_install(){
 		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
 			VALUES('1','2','twitter', '<a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-count=\"vertical\" data-via=\"[twitter]\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script>', '<a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-count=\"horizontal\" data-via=\"[twitter]\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script>')");
 		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('1','3','facebook', '<a name=\"fb_share\" type=\"box_count\" href=\"http://www.facebook.com/sharer.php\">Share</a><script src=\"http://static.ak.fbcdn.net/connect.php/js/FB.Share\" type=\"text/javascript\"></script>', '<a name=\"fb_share\" type=\"button_count\" href=\"http://www.facebook.com/sharer.php\">Share</a><script src=\"http://static.ak.fbcdn.net/connect.php/js/FB.Share\" type=\"text/javascript\"></script>')");
+			VALUES('0','3','facebook', '<iframe src=\"http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fexample.com%2Fpage%2Fto%2Flike&layout=box_count&show_faces=false&width=60&action=like&colorscheme=light&height=45\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:45px; height:60px;\" allowTransparency=\"true\"></iframe>', '<iframe src=\"http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fexample.com%2Fpage%2Fto%2Flike&layout=button_count&show_faces=false&width=85&action=like&colorscheme=light&height=21\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:85px; height:21px;\" allowTransparency=\"true\"></iframe>')");
 		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('1','4','buzz', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"normal-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"small-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>')");
+			VALUES('1','4','sharethis', '<script type=\"text/javascript\" src=\"http://w.sharethis.com/button/buttons.js\"></script><span class=\"st_facebook_vcount\" displayText=\"Share\"></span><span class=\"st_email\" displayText=\"Email\"></span><span class=\"st_sharethis\" displayText=\"Share\"></span>', '<span class=\"st_facebook_hcount\" displayText=\"Share\"></span><span class=\"st_email\" displayText=\"Email\"></span><span class=\"st_sharethis\" displayText=\"Share\"></span>')");
 		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('0','5','reddit', '<script type=\"text/javascript\" src=\"http://reddit.com/static/button/button2.js\"></script>', '<script type=\"text/javascript\" src=\"http://reddit.com/static/button/button1.js\"></script>')");
+			VALUES('0','5','buzz', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"normal-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"small-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>')");
 		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('0','6','dzone', '<script language=\"javascript\" src=\"http://widgets.dzone.com/links/widgets/zoneit.js\"></script>', '<script language=\"javascript\" src=\"http://widgets.dzone.com/links/widgets/zoneit.js\"></script>')");
+			VALUES('0','6','reddit', '<script type=\"text/javascript\" src=\"http://reddit.com/static/button/button2.js\"></script>', '<script type=\"text/javascript\" src=\"http://reddit.com/static/button/button1.js\"></script>')");
 		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('0','7','stumbleupon', '<script src=\"http://www.stumbleupon.com/hostedbadge.php?s=5\"></script>', '<script src=\"http://www.stumbleupon.com/hostedbadge.php?s=2\"></script>')");
+			VALUES('0','7','dzone', '<script language=\"javascript\" src=\"http://widgets.dzone.com/links/widgets/zoneit.js\"></script>', '<script language=\"javascript\" src=\"http://widgets.dzone.com/links/widgets/zoneit.js\"></script>')");
 		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('0','8','yahoo', '<script type=\"text/javascript\" src=\"http://d.yimg.com/ds/badge2.js\" badgetype=\"square\">[url]</script>', '<script type=\"text/javascript\" src=\"http://d.yimg.com/ds/badge2.js\" badgetype=\"small-votes\">[url]</script>')");
+			VALUES('0','8','stumbleupon', '<script src=\"http://www.stumbleupon.com/hostedbadge.php?s=5\"></script>', '<script src=\"http://www.stumbleupon.com/hostedbadge.php?s=2\"></script>')");
 		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('0','9','designfloat', '<script type=\"text/javascript\">submit_url = \'[url]\';</script><script type=\"text/javascript\" src=\"http://www.designfloat.com/evb2/button.php\"></script>', '<script type=\"text/javascript\">submit_url = \'[url]\';</script><script type=\"text/javascript\" src=\"http://www.designfloat.com/evb/button.php\"></script>')");
+			VALUES('0','9','yahoo', '<script type=\"text/javascript\" src=\"http://d.yimg.com/ds/badge2.js\" badgetype=\"square\">[url]</script>', '<script type=\"text/javascript\" src=\"http://d.yimg.com/ds/badge2.js\" badgetype=\"small-votes\">[url]</script>')");
 		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('1','10','email', '<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>', '<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>')");
+			VALUES('0','10','designfloat', '<script type=\"text/javascript\">submit_url = \'[url]\';</script><script type=\"text/javascript\" src=\"http://www.designfloat.com/evb2/button.php\"></script>', '<script type=\"text/javascript\">submit_url = \'[url]\';</script><script type=\"text/javascript\" src=\"http://www.designfloat.com/evb/button.php\"></script>')");
+		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
+			VALUES('0','11','email', '<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>', '<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>')");
 		add_option('sharebar_auto_posts', 1);
 		add_option('sharebar_auto_pages', 1);
 		add_option('sharebar_horizontal', 1);
@@ -68,6 +71,8 @@ function sharebar_install(){
 		add_option('sharebar_rightoffset','10');
 		add_option('sharebar_swidth','65');
 		add_option('sharebar_twitter_username','ThinkDevGrow');
+		add_option('sharebar_bg','#ffffff');
+		add_option('sharebar_border','#cccccc');
 	}
 }
 
@@ -79,21 +84,14 @@ function sharebar_reset(){
 }
 
 function sharebar_menu(){
-    global $wpdb;
-
-	$auto_posts = get_option('sharebar_auto_posts'); $auto_pages = get_option('sharebar_auto_pages'); $credit = get_option('sharebar_credit');
-	$horizontal = get_option('sharebar_horizontal'); $width = get_option('sharebar_minwidth'); $position = get_option('sharebar_position');
-	$leftoffset = get_option('sharebar_leftoffset'); $rightoffset = get_option('sharebar_rightoffset');
-	$swidth = get_option('sharebar_swidth'); $twitter_username = get_option('sharebar_twitter_username');
-
+    global $wpdb, $sharebar_options;
+	foreach($sharebar_options as $option) $$option = get_option('sharebar_'.$option);
     include 'sharebar-admin.php';
 }
 
-function sharebar_settings($auto_posts, $auto_pages, $horizontal, $width, $position, $leftoffset, $rightoffset, $credit, $swidth, $twitter_username){
-	update_option('sharebar_auto_posts',$auto_posts); update_option('sharebar_auto_pages',$auto_pages); update_option('sharebar_horizontal',$horizontal);
-	update_option('sharebar_minwidth',$width); update_option('sharebar_position',$position); update_option('sharebar_credit',$credit);
-	update_option('sharebar_leftoffset',$leftoffset); update_option('sharebar_rightoffset',$rightoffset);
-	update_option('sharebar_swidth',$swidth); update_option('sharebar_twitter_username',$twitter_username);
+function sharebar_settings($settings){
+	global $sharebar_options;
+	foreach($sharebar_options as $option) update_option('sharebar_'.$option,$settings[$option]);
 }
 
 
@@ -106,9 +104,11 @@ function sharebar_auto($content){
 function sharebar($print = true){
 	global $wpdb, $post;
 	$sharebar_hide = get_post_meta($post->ID, 'sharebar_hide', true);
+	$sbg = get_option('sharebar_sbg');
+	$sborder = get_option('sharebar_sborder');
 	if(empty($sharebar_hide)) {
 		$credit = get_option('sharebar_credit');
-		$str = '<ul id="sharebar">';
+		$str = '<ul id="sharebar" style="background:#'.$sbg.';border-color:#'.$sborder.';">';
 		$results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar WHERE enabled=1 ORDER BY position, id ASC"); $str .= "\n";
 		foreach($results as $result){ $str .= '<li>'.sharebar_filter($result->big).'</li>'; }
 		if($credit) $str .= '<li class="credit"><a href="http://devgrow.com/sharebar" target="_blank">Sharebar</a></li>';
@@ -149,10 +149,8 @@ function sharebar_init(){
 }
 
 function sharebar_header(){
-	$auto_posts = get_option('sharebar_auto_posts'); $auto_pages = get_option('sharebar_auto_pages'); $horizontal = get_option('sharebar_horizontal');
-	$width = get_option('sharebar_minwidth'); $position = get_option('sharebar_position'); $credit = get_option('sharebar_credit');
-	$leftoffset = get_option('sharebar_leftoffset'); $rightoffset = get_option('sharebar_rightoffset');
-	$swidth = get_option('sharebar_swidth'); $twitter_username = get_option('sharebar_twitter_username');
+	global $sharebar_options;
+	foreach($sharebar_options as $option) $$option = get_option('sharebar_'.$option);
 	if(function_exists('wp_enqueue_script') && (is_single() || is_page())) {
 		echo '<link rel="stylesheet" href="'.get_bloginfo('wpurl').'/wp-content/plugins/sharebar/css/sharebar.css" type="text/css" media="screen" />';
 		if($horizontal)	$hori = 'true'; else $hori = 'false';
@@ -196,10 +194,37 @@ function sharebar_save_post_options($post_id) {
 	update_post_meta($post_id, 'sharebar_hide', true);
 }
 
+function sharebar_admin_head(){
+	echo '
+	<link rel="stylesheet" media="screen" type="text/css" href="'.get_bloginfo('wpurl').'/wp-content/plugins/sharebar/css/colorpicker.css" />
+	<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-content/plugins/sharebar/js/colorpicker.js"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function($) {
+			var ids = ["sbg","sborder"];
+			$.each(ids, function() {
+				var id = this;
+				$("#"+this).ColorPicker({
+					onSubmit: function(hsb, hex, rgb, el) {
+						$(el).val(hex);
+						$(el).ColorPickerHide();
+					},
+					onBeforeShow: function () {
+						$(this).ColorPickerSetColor(this.value);
+					},
+					onChange: function(hsb, hex, rgb, el) {
+						$("#"+id).val(hex);
+					}
+				});
+			});
+		});
+	</script>';
+}
+
 
 add_filter('the_content', 'sharebar_auto');
-add_action('init', sharebar_init);
-add_action('wp_head', sharebar_header);
+add_action('init', 'sharebar_init');
+add_action('wp_head', 'sharebar_header');
+add_action('admin_head', 'sharebar_admin_head');
 add_action('activate_sharebar/sharebar.php', 'sharebar_install');
 add_action('admin_menu', 'sharebar_admin_actions');
 add_action('add_meta_boxes', 'sharebar_custom_boxes');
