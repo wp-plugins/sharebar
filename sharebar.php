@@ -3,7 +3,7 @@
 Plugin Name: Sharebar
 Plugin URI: http://devgrow.com/sharebar-wordpress-plugin/
 Description: Adds a dynamic bar with sharing icons (Facebook, Twitter, etc.) that changes based on browser size and page location.  More info and demo at: <a href="http://devgrow.com/sharebar-wordpress-plugin/">Sharebar Plugin Home</a>
-Version: 1.2
+Version: 1.2.1
 Author: Monjurul Dolon
 Author URI: http://mdolon.com/
 License: GPL2
@@ -44,7 +44,7 @@ function sharebar_install(){
 		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
 			VALUES('1','2','twitter', '<a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-count=\"vertical\" data-via=\"[twitter]\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script>', '<a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-count=\"horizontal\" data-via=\"[twitter]\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script>')");
 		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('0','3','facebook', '<iframe src=\"http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fexample.com%2Fpage%2Fto%2Flike&layout=box_count&show_faces=false&width=60&action=like&colorscheme=light&height=45\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:45px; height:60px;\" allowTransparency=\"true\"></iframe>', '<iframe src=\"http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fexample.com%2Fpage%2Fto%2Flike&layout=button_count&show_faces=false&width=85&action=like&colorscheme=light&height=21\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:85px; height:21px;\" allowTransparency=\"true\"></iframe>')");
+			VALUES('0','3','facebook', '<iframe src=\"http://www.facebook.com/plugins/like.php?href=[url]&layout=box_count&show_faces=false&width=60&action=like&colorscheme=light&height=45\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:45px; height:60px;\" allowTransparency=\"true\"></iframe>', '<iframe src=\"http://www.facebook.com/plugins/like.php?href=[url]&layout=button_count&show_faces=false&width=85&action=like&colorscheme=light&height=21\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:85px; height:21px;\" allowTransparency=\"true\"></iframe>')");
 		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
 			VALUES('1','4','sharethis', '<script type=\"text/javascript\" src=\"http://w.sharethis.com/button/buttons.js\"></script><span class=\"st_facebook_vcount\" displayText=\"Share\"></span><span class=\"st_email\" displayText=\"Email\"></span><span class=\"st_sharethis\" displayText=\"Share\"></span>', '<span class=\"st_facebook_hcount\" displayText=\"Share\"></span><span class=\"st_email\" displayText=\"Email\"></span><span class=\"st_sharethis\" displayText=\"Share\"></span>')");
 		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
@@ -154,6 +154,7 @@ function sharebar_header(){
 	if(function_exists('wp_enqueue_script') && (is_single() || is_page())) {
 		echo '<link rel="stylesheet" href="'.get_bloginfo('wpurl').'/wp-content/plugins/sharebar/css/sharebar.css" type="text/css" media="screen" />';
 		if($horizontal)	$hori = 'true'; else $hori = 'false';
+		if(!$width) $width = 1000;
 		echo "\n"; ?><script type="text/javascript">jQuery(document).ready(function($) { $('.sharebar').sharebar({horizontal:'<?php echo $hori; ?>',swidth:'<?php echo $swidth; ?>',minwidth:<?php echo $width; ?>,position:'<?php echo $position; ?>',leftOffset:<?php echo $leftoffset; ?>,rightOffset:<?php echo $rightoffset; ?>}); });</script><?php echo "\n"; ?><!-- Sharebar Plugin by Monjurul Dolon (http://mdolon.com/) - more info at: http://devgrow.com/sharebar-wordpress-plugin --><?php echo "\n"; ?><?php
 	}
 }

@@ -55,6 +55,10 @@ Play with the Right Offset in the settings page of the plugin - this should incl
 
 == Changelog ==
 
+= 1.2.1 =
+* Fixed Facebook Like button to show default post URL (and not example.com - doh!)
+* Added default minwidth setting so Sharebar should appear for everyone when they update and not spaz out
+
 = 1.2 =
 * Added ability to change color of vertical widget from admin panel
 * Added ShareThis buttons
