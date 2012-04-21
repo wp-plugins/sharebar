@@ -3,7 +3,7 @@
 Plugin Name: Sharebar
 Plugin URI: http://devgrow.com/sharebar-wordpress-plugin/
 Description: Adds a dynamic bar with sharing icons (Facebook, Twitter, etc.) that changes based on browser size and page location.  More info and demo at: <a href="http://devgrow.com/sharebar-wordpress-plugin/">Sharebar Plugin Home</a>
-Version: 1.2.1
+Version: 1.2.2
 Author: Monjurul Dolon
 Author URI: http://mdolon.com/
 License: GPL2
@@ -109,7 +109,7 @@ function sharebar($print = true){
 	if(empty($sharebar_hide)) {
 		$credit = get_option('sharebar_credit');
 		$str = '<ul id="sharebar" style="background:#'.$sbg.';border-color:#'.$sborder.';">';
-		$results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar WHERE enabled=1 ORDER BY position, id ASC"); $str .= "\n";
+		$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."sharebar WHERE enabled=1 ORDER BY position, id ASC")); $str .= "\n";
 		foreach($results as $result){ $str .= '<li>'.sharebar_filter($result->big).'</li>'; }
 		if($credit) $str .= '<li class="credit"><a href="http://devgrow.com/sharebar" target="_blank">Sharebar</a></li>';
 		$str .= '</ul>';
@@ -121,7 +121,7 @@ function sharebar_horizontal($print = true){
 	if(get_option('sharebar_horizontal')){
 		global $wpdb;
 		$str = '<ul id="sharebarx">';
-		$results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar WHERE enabled=1 ORDER BY position, id ASC"); $str .= "\n";
+		$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."sharebar WHERE enabled=1 ORDER BY position, id ASC")); $str .= "\n";
 		foreach($results as $result) { $str .= '<li>'.sharebar_filter($result->small).'</li>'; }
 		$str .= '</ul>';
 		if($print) echo $str; else return $str;
@@ -130,18 +130,18 @@ function sharebar_horizontal($print = true){
 
 function sharebar_button($name, $size = 'big'){
 	global $wpdb;
-	$item = $wpdb->get_row("SELECT * FROM ".$wpdb->prefix."sharebar WHERE name='$name'");
+	$item = $wpdb->get_row($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."sharebar WHERE name='$name'"));
 	if($size == 'big') echo $item->big; else echo $item->small;
 }
 
 function sharebar_update_button($id, $uptask){
 	global $wpdb;
 	if($uptask == 'enable')
-		$wpdb->query("UPDATE ".$wpdb->prefix."sharebar SET enabled='1' WHERE id='$id'");
+		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET enabled='1' WHERE id='$id'"));
 	elseif($uptask == 'disable')
-		$wpdb->query("UPDATE ".$wpdb->prefix."sharebar SET enabled='0' WHERE id='$id'");
+		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET enabled='0' WHERE id='$id'"));
 	elseif($uptask == 'delete')
-		$wpdb->query("DELETE FROM ".$wpdb->prefix."sharebar WHERE id=$id LIMIT 1");
+		$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->prefix."sharebar WHERE id=$id LIMIT 1"));
 }
 
 function sharebar_init(){
@@ -219,6 +219,22 @@ function sharebar_admin_head(){
 			});
 		});
 	</script>';
+}
+
+function sanitize($input) {
+    if (is_array($input)) {
+        foreach($input as $var=>$val) {
+            $output[$var] = sanitize($val);
+        }
+    }
+    else {
+        if (get_magic_quotes_gpc()) {
+            $input = stripslashes($input);
+        }
+        $input  = cleanInput($input);
+        $output = mysql_real_escape_string($input);
+    }
+    return $output;
 }
 
 

@@ -15,17 +15,17 @@
 		along with this program; if not, write to the Free Software
 		Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	*/
-	$id = $_GET['id'] ? $_GET['id'] : $_POST['id'];
-	$pos = $_GET['pos'] ? $_GET['pos'] : $_POST['pos'];
-	$status = $_GET['status'] ? $_GET['status'] : $_POST['status'];
-	$task = $_GET['t'] ? $_GET['t'] : $_POST['t'];
-	$do = $_POST['do'];
+	$id = sanitize($_GET['id'] ? $_GET['id'] : $_POST['id']);
+	$pos = sanitize($_GET['pos'] ? $_GET['pos'] : $_POST['pos']);
+	$status = sanitize($_GET['status'] ? $_GET['status'] : $_POST['status']);
+	$task = sanitize($_GET['t'] ? $_GET['t'] : $_POST['t']);
+	$do = sanitize($_POST['do']);
 	
-	if($id)	$item = $wpdb->get_row("SELECT * FROM ".$wpdb->prefix."sharebar WHERE id=$id");
+	if($id)	$item = $wpdb->get_row($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."sharebar WHERE id=$id"));
 
-	if($do == 'update') $wpdb->query("UPDATE ".$wpdb->prefix."sharebar SET enabled='".$_POST['enabled']."', position='".$_POST['position']."', name='".$_POST['name']."', big='".$_POST['big']."', small='".$_POST['small']."' WHERE id='$id'");
-	elseif($do == 'add') $wpdb->query("INSERT INTO ".$wpdb->prefix."sharebar (position, name, big, small) VALUES('".$_POST['position']."','".$_POST['name']."', '".$_POST['big']."', '".$_POST['small']."')");
-	elseif($do == 'delete') $wpdb->query("DELETE FROM ".$wpdb->prefix."sharebar WHERE id=$id LIMIT 1");
+	if($do == 'update') $wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET enabled='".$_POST['enabled']."', position='".$_POST['position']."', name='".$_POST['name']."', big='".$_POST['big']."', small='".$_POST['small']."' WHERE id='$id'"));
+	elseif($do == 'add') $wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->prefix."sharebar (position, name, big, small) VALUES('".$_POST['position']."','".$_POST['name']."', '".$_POST['big']."', '".$_POST['small']."')"));
+	elseif($do == 'delete') $wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->prefix."sharebar WHERE id=$id LIMIT 1"));
 	elseif($do == 'reset') sharebar_reset();
 	elseif($do == 'settings'){
 		$binaries = array("auto_posts","auto_pages","horizontal","credit");
@@ -55,8 +55,8 @@
 		$credit = get_option('sharebar_credit');
 	}
 	
-	if($pos == 'moveup') $wpdb->query("UPDATE ".$wpdb->prefix."sharebar SET position=position-1 WHERE id='$id'");
-	if($pos == 'movedown') $wpdb->query("UPDATE ".$wpdb->prefix."sharebar SET position=position+1 WHERE id='$id'");
+	if($pos == 'moveup') $wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET position=position-1 WHERE id='$id'"));
+	if($pos == 'movedown') $wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET position=position+1 WHERE id='$id'"));
 	if($pos) $status = "Position Updated!";
 ?>
 <style>
@@ -314,7 +314,7 @@ jQuery(document).ready(function(){
 	<table id="sharebar-tl">
 		<thead><tr><th><a href="/" class="toggle-all">All</a></th><th class='leftj'>Name</th><th>Position</th><th>Big Button</th><th>Small Button</th><th>Actions</th></tr></thead>
 		<tbody>	
-		<?php $results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar ORDER BY position, id ASC"); echo "\n";
+		<?php $results = $wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."sharebar ORDER BY position, id ASC")); echo "\n";
 		foreach($results as $result){
 			if(!$result->enabled){
 				$dis = " class='disabled'";

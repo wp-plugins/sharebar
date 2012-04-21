@@ -55,6 +55,9 @@ Play with the Right Offset in the settings page of the plugin - this should incl
 
 == Changelog ==
 
+= 1.2.2 =
+* Fixed security vulnerabilities (XSS and SQL injects)
+
 = 1.2.1 =
 * Fixed Facebook Like button to show default post URL (and not example.com - doh!)
 * Added default minwidth setting so Sharebar should appear for everyone when they update and not spaz out
