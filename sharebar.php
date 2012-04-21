@@ -3,7 +3,7 @@
 Plugin Name: Sharebar
 Plugin URI: http://devgrow.com/sharebar-wordpress-plugin/
 Description: Adds a dynamic bar with sharing icons (Facebook, Twitter, etc.) that changes based on browser size and page location.  More info and demo at: <a href="http://devgrow.com/sharebar-wordpress-plugin/">Sharebar Plugin Home</a>
-Version: 1.2.2
+Version: 1.2.3
 Author: Monjurul Dolon
 Author URI: http://mdolon.com/
 License: GPL2
@@ -137,11 +137,11 @@ function sharebar_button($name, $size = 'big'){
 function sharebar_update_button($id, $uptask){
 	global $wpdb;
 	if($uptask == 'enable')
-		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET enabled='1' WHERE id='$id'"));
+		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET enabled='1' WHERE id='%d'", $id));
 	elseif($uptask == 'disable')
-		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET enabled='0' WHERE id='$id'"));
+		$wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET enabled='0' WHERE id='%d'", $id));
 	elseif($uptask == 'delete')
-		$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->prefix."sharebar WHERE id=$id LIMIT 1"));
+		$wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->prefix."sharebar WHERE id=%d LIMIT 1", $id));
 }
 
 function sharebar_init(){
@@ -219,6 +219,19 @@ function sharebar_admin_head(){
 			});
 		});
 	</script>';
+}
+
+function cleanInput($input) {
+
+	$search = array(
+		'@<script[^>]*?>.*?</script>@si',   // Strip out javascript
+		'@<[\/\!]*?[^<>]*?>@si',            // Strip out HTML tags
+		'@<style[^>]*?>.*?</style>@siU',    // Strip style tags properly
+		'@<![\s\S]*?--[ \t\n\r]*>@'         // Strip multi-line comments
+	);
+
+    $output = preg_replace($search, '', $input);
+    return $output;
 }
 
 function sanitize($input) {

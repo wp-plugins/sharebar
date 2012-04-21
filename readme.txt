@@ -55,6 +55,9 @@ Play with the Right Offset in the settings page of the plugin - this should incl
 
 == Changelog ==
 
+= 1.2.3 =
+* Disabled sharebar-admin.php file outside of WordPress
+
 = 1.2.2 =
 * Fixed security vulnerabilities (XSS and SQL injects)
 

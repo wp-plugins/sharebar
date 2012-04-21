@@ -15,17 +15,21 @@
 		along with this program; if not, write to the Free Software
 		Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	*/
+	if(!function_exists('sharebar')) {
+		echo "This file should only be accessed from within WordPress.";
+		exit();
+	}
 	$id = sanitize($_GET['id'] ? $_GET['id'] : $_POST['id']);
 	$pos = sanitize($_GET['pos'] ? $_GET['pos'] : $_POST['pos']);
 	$status = sanitize($_GET['status'] ? $_GET['status'] : $_POST['status']);
 	$task = sanitize($_GET['t'] ? $_GET['t'] : $_POST['t']);
 	$do = sanitize($_POST['do']);
 	
-	if($id)	$item = $wpdb->get_row($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."sharebar WHERE id=$id"));
+	if($id)	$item = $wpdb->get_row($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."sharebar WHERE id=%d", $id));
 
-	if($do == 'update') $wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET enabled='".$_POST['enabled']."', position='".$_POST['position']."', name='".$_POST['name']."', big='".$_POST['big']."', small='".$_POST['small']."' WHERE id='$id'"));
-	elseif($do == 'add') $wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->prefix."sharebar (position, name, big, small) VALUES('".$_POST['position']."','".$_POST['name']."', '".$_POST['big']."', '".$_POST['small']."')"));
-	elseif($do == 'delete') $wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->prefix."sharebar WHERE id=$id LIMIT 1"));
+	if($do == 'update') $wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET enabled='%d', position='%d', name='%s', big='%s', small='%s' WHERE id='%d'", sanitize($_POST['enabled']), sanitize($_POST['position']), sanitize($_POST['name']), sanitize($_POST['big']), sanitize($_POST['small']), $id));
+	elseif($do == 'add') $wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->prefix."sharebar (position, name, big, small) VALUES('%d','%s', '%s', '%s')", sanitize($_POST['position']), sanitize($_POST['name']), sanitize($_POST['big']), sanitize($_POST['small'])));
+	elseif($do == 'delete') $wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->prefix."sharebar WHERE id=%d LIMIT 1", $id));
 	elseif($do == 'reset') sharebar_reset();
 	elseif($do == 'settings'){
 		$binaries = array("auto_posts","auto_pages","horizontal","credit");
@@ -55,8 +59,8 @@
 		$credit = get_option('sharebar_credit');
 	}
 	
-	if($pos == 'moveup') $wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET position=position-1 WHERE id='$id'"));
-	if($pos == 'movedown') $wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET position=position+1 WHERE id='$id'"));
+	if($pos == 'moveup') $wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET position=position-1 WHERE id='%d'", $id));
+	if($pos == 'movedown') $wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET position=position+1 WHERE id='%d'", $id));
 	if($pos) $status = "Position Updated!";
 ?>
 <style>
