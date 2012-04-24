@@ -15,8 +15,8 @@
 		along with this program; if not, write to the Free Software
 		Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	*/
-	if(!function_exists('sharebar')) {
-		echo "This file should only be accessed from within WordPress.";
+	if(!function_exists('sharebar') || !is_admin()) {
+		echo "You are not authorized to access this file.";
 		exit();
 	}
 	$id = sanitize($_GET['id'] ? $_GET['id'] : $_POST['id']);
@@ -27,8 +27,8 @@
 	
 	if($id)	$item = $wpdb->get_row($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."sharebar WHERE id=%d", $id));
 
-	if($do == 'update') $wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET enabled='%d', position='%d', name='%s', big='%s', small='%s' WHERE id='%d'", sanitize($_POST['enabled']), sanitize($_POST['position']), sanitize($_POST['name']), sanitize($_POST['big']), sanitize($_POST['small']), $id));
-	elseif($do == 'add') $wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->prefix."sharebar (position, name, big, small) VALUES('%d','%s', '%s', '%s')", sanitize($_POST['position']), sanitize($_POST['name']), sanitize($_POST['big']), sanitize($_POST['small'])));
+	if($do == 'update') $wpdb->query($wpdb->prepare("UPDATE ".$wpdb->prefix."sharebar SET enabled='%d', position='%d', name='%s', big='". $_POST['big'] ."', small='". $_POST['small'] ."' WHERE id='%d'", sanitize($_POST['enabled']), sanitize($_POST['position']), sanitize($_POST['name']), $id));
+	elseif($do == 'add') $wpdb->query($wpdb->prepare("INSERT INTO ".$wpdb->prefix."sharebar (position, name, big, small) VALUES('%d','%s', '". $_POST['big'] ."', '". $_POST['small'] ."')", sanitize($_POST['position']), sanitize($_POST['name'])));
 	elseif($do == 'delete') $wpdb->query($wpdb->prepare("DELETE FROM ".$wpdb->prefix."sharebar WHERE id=%d LIMIT 1", $id));
 	elseif($do == 'reset') sharebar_reset();
 	elseif($do == 'settings'){
