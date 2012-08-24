@@ -64,7 +64,7 @@ function sharebar_install(){
 		add_option('sharebar_auto_posts', 1);
 		add_option('sharebar_auto_pages', 1);
 		add_option('sharebar_horizontal', 1);
-		add_option('sharebar_credit', 1);
+		add_option('sharebar_credit', 0);
 		add_option('sharebar_minwidth','1000');
 		add_option('sharebar_position','left');
 		add_option('sharebar_leftoffset','20');
