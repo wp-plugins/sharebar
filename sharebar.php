@@ -3,8 +3,8 @@
 Plugin Name: Sharebar
 Plugin URI: http://devgrow.com/sharebar-wordpress-plugin/
 Description: Adds a dynamic bar with sharing icons (Facebook, Twitter, etc.) that changes based on browser size and page location.  More info and demo at: <a href="http://devgrow.com/sharebar-wordpress-plugin/">Sharebar Plugin Home</a>
-Version: 1.2.5
-Author: Monjurul Dolon
+Version: 1.3
+Author: Monji Dolon
 Author URI: http://mdolon.com/
 License: GPL2
 */
@@ -26,41 +26,47 @@ License: GPL2
 $sharebar_options = array("auto_posts","auto_pages","horizontal","width","position","credit","leftoffset","rightoffset","swidth","twitter_username","sbg","sborder");
 
 function sharebar_install(){
-    global $wpdb;
-    $table = $wpdb->prefix."sharebar";
+  global $wpdb;
+  $table = $wpdb->prefix."sharebar";
 	if($wpdb->get_var("SHOW TABLES LIKE '$table'") != $table) {
 		$structure = "CREATE TABLE $table (
-		id mediumint(9) NOT NULL AUTO_INCREMENT,
-		position mediumint(9) NOT NULL,
-		enabled int(1) NOT NULL,
-		name VARCHAR(80) NOT NULL,
-		big text NOT NULL,
-		small text NULL,
-		UNIQUE KEY id (id)
+			id mediumint(9) NOT NULL AUTO_INCREMENT,
+			position mediumint(9) NOT NULL,
+			enabled int(1) NOT NULL,
+			name VARCHAR(80) NOT NULL,
+			big text NOT NULL,
+			small text NULL,
+			UNIQUE KEY id (id)
 		);";
+
 		$wpdb->query($structure);
-		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('1','1','digg', '<script type=\"text/javascript\">(function() { var s = document.createElement(\'SCRIPT\'), s1 = document.getElementsByTagName(\'SCRIPT\')[0]; s.type = \'text/javascript\'; s.async = true; s.src = \'http://widgets.digg.com/buttons.js\'; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\"DiggThisButton DiggMedium\"></a>', '<script type=\"text/javascript\">(function() { var s = document.createElement(\'SCRIPT\'), s1 = document.getElementsByTagName(\'SCRIPT\')[0]; s.type = \'text/javascript\'; s.async = true; s.src = \'http://widgets.digg.com/buttons.js\'; s1.parentNode.insertBefore(s, s1); })(); </script><a class=\"DiggThisButton DiggCompact\"></a>')");
-		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('1','2','twitter', '<a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-count=\"vertical\" data-via=\"[twitter]\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script>', '<a href=\"http://twitter.com/share\" class=\"twitter-share-button\" data-count=\"horizontal\" data-via=\"[twitter]\">Tweet</a><script type=\"text/javascript\" src=\"http://platform.twitter.com/widgets.js\"></script>')");
-		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('0','3','facebook', '<iframe src=\"http://www.facebook.com/plugins/like.php?href=[url]&layout=box_count&show_faces=false&width=60&action=like&colorscheme=light&height=45\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:45px; height:60px;\" allowTransparency=\"true\"></iframe>', '<iframe src=\"http://www.facebook.com/plugins/like.php?href=[url]&layout=button_count&show_faces=false&width=85&action=like&colorscheme=light&height=21\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:85px; height:21px;\" allowTransparency=\"true\"></iframe>')");
-		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('1','4','sharethis', '<script type=\"text/javascript\" src=\"http://w.sharethis.com/button/buttons.js\"></script><span class=\"st_facebook_vcount\" displayText=\"Share\"></span><span class=\"st_email\" displayText=\"Email\"></span><span class=\"st_sharethis\" displayText=\"Share\"></span>', '<span class=\"st_facebook_hcount\" displayText=\"Share\"></span><span class=\"st_email\" displayText=\"Email\"></span><span class=\"st_sharethis\" displayText=\"Share\"></span>')");
-		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('0','5','buzz', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"normal-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>', '<a title=\"Post to Google Buzz\" class=\"google-buzz-button\" href=\"http://www.google.com/buzz/post\" data-button-style=\"small-count\"></a><script type=\"text/javascript\" src=\"http://www.google.com/buzz/api/button.js\"></script>')");
-		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('0','6','reddit', '<script type=\"text/javascript\" src=\"http://reddit.com/static/button/button2.js\"></script>', '<script type=\"text/javascript\" src=\"http://reddit.com/static/button/button1.js\"></script>')");
-		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('0','7','dzone', '<script language=\"javascript\" src=\"http://widgets.dzone.com/links/widgets/zoneit.js\"></script>', '<script language=\"javascript\" src=\"http://widgets.dzone.com/links/widgets/zoneit.js\"></script>')");
-		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('0','8','stumbleupon', '<script src=\"http://www.stumbleupon.com/hostedbadge.php?s=5\"></script>', '<script src=\"http://www.stumbleupon.com/hostedbadge.php?s=2\"></script>')");
-		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('0','9','yahoo', '<script type=\"text/javascript\" src=\"http://d.yimg.com/ds/badge2.js\" badgetype=\"square\">[url]</script>', '<script type=\"text/javascript\" src=\"http://d.yimg.com/ds/badge2.js\" badgetype=\"small-votes\">[url]</script>')");
-		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('0','10','designfloat', '<script type=\"text/javascript\">submit_url = \'[url]\';</script><script type=\"text/javascript\" src=\"http://www.designfloat.com/evb2/button.php\"></script>', '<script type=\"text/javascript\">submit_url = \'[url]\';</script><script type=\"text/javascript\" src=\"http://www.designfloat.com/evb/button.php\"></script>')");
-		$wpdb->query("INSERT INTO $table(enabled, position,name, big, small)
-			VALUES('0','11','email', '<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>', '<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>')");
+
+		$facebook = "<div id=\"fb-root\"></div><script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = \"//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3\"; fjs.parentNode.insertBefore(js, fjs); }(document, \'script\', \'facebook-jssdk\'));</script><div class=\"fb-like\" data-width=\"60\" data-layout=\"box_count\" data-action=\"like\" data-show-faces=\"false\" data-share=\"false\"></div>";
+		$facebook_small = "<div id=\"fb-root\"></div><script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = \"//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3\"; fjs.parentNode.insertBefore(js, fjs); }(document, \'script\', \'facebook-jssdk\'));</script><div class=\"fb-like\" data-width=\"80\" data-layout=\"button_count\" data-action=\"like\" data-show-faces=\"false\" data-share=\"false\"></div>";
+		$twitter = "<a class=\"twitter-share-button\" href=\"https://twitter.com/share\" data-count=\"vertical\">Tweet</a><script>window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src=\"https://platform.twitter.com/widgets.js\";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,\"script\",\"twitter-wjs\"));</script>";
+		$twitter_small = "<a class=\"twitter-share-button\" href=\"https://twitter.com/share\">Tweet</a><script>window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src=\"https://platform.twitter.com/widgets.js\";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,\"script\",\"twitter-wjs\"));</script>";
+		$sharethis = "<script type=\"text/javascript\" src=\"http://w.sharethis.com/button/buttons.js\"></script><span class=\"st_facebook_vcount\" displayText=\"Share\"></span><span class=\"st_email\" displayText=\"Email\"></span><span class=\"st_sharethis\" displayText=\"Share\"></span>";
+		$sharethis_small = "<span class=\"st_facebook_hcount\" displayText=\"Share\"></span><span class=\"st_email\" displayText=\"Email\"></span><span class=\"st_sharethis\" displayText=\"Share\"></span>";
+		$reddit = "<script type=\"text/javascript\" src=\"http://reddit.com/static/button/button2.js\"></script>";
+		$reddit_small = "<script type=\"text/javascript\" src=\"http://reddit.com/static/button/button1.js\"></script>";
+		$dzone = "<script language=\"javascript\" src=\"http://widgets.dzone.com/links/widgets/zoneit.js\"></script>";
+		$dzone_small = "<script language=\"javascript\" src=\"http://widgets.dzone.com/links/widgets/zoneit.js\"></script>";
+		$stumbleupon = "<script src=\"http://www.stumbleupon.com/hostedbadge.php?s=5\"></script>";
+		$stumbleupon_small = "<script src=\"http://www.stumbleupon.com/hostedbadge.php?s=2\"></script>";
+		$designfloat = "<script type=\"text/javascript\">submit_url = \'[url]\';</script><script type=\"text/javascript\" src=\"http://www.designfloat.com/evb2/button.php\"></script>";
+		$designfloat_small = "<script type=\"text/javascript\">submit_url = \'[url]\';</script><script type=\"text/javascript\" src=\"http://www.designfloat.com/evb/button.php\"></script>";
+		$email = "<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>";
+		$email_small = "<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>";
+
+		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('1','1','facebook', '$facebook', '$facebook_small')");
+		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('1','2','twitter', '$twitter', '$twitter_small')");
+		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('0','3','sharethis', '$sharethis', '$sharethis_small')");
+		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('0','4','reddit', '$reddit', '$reddit_small')");
+		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('0','5','dzone', '$dzone', '$dzone_small')");
+		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('0','6','stumbleupon', '$stumbleupon', '$stumbleupon_small')");
+		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('0','7','designfloat', '$designfloat', '$designfloat_small')");
+		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('1','8','email', '$email', '$email_small')");
+
 		add_option('sharebar_auto_posts', 1);
 		add_option('sharebar_auto_pages', 1);
 		add_option('sharebar_horizontal', 1);
@@ -245,7 +251,7 @@ function sanitize($input) {
             $input = stripslashes($input);
         }
         $input  = cleanInput($input);
-        $output = mysql_real_escape_string($input);
+        $output = esc_sql($input);
     }
     return $output;
 }

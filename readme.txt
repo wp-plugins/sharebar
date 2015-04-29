@@ -55,6 +55,9 @@ Play with the Right Offset in the settings page of the plugin - this should incl
 
 == Changelog ==
 
+= 1.3 =
+* Much, much needed update; lots of compatibility fixes
+
 = 1.2.5 =
 * Support for updated WordPress get_results function, thanks to e3mobile for the fix
 

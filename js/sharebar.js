@@ -1,6 +1,6 @@
 /*
  *  ShareBar - Creates a dynamic, vertical sharing bar to the left of a WordPress post and hides it if browser window is too small
- *  Copyright 2010 Monjurul Dolon, http://mdolon.com/
+ *  Copyright 2010 Monji Dolon, http://mdolon.com/
  *  Released under the MIT, BSD, and GPL Licenses.
  *  More information: http://devgrow.com/sharebar
  */

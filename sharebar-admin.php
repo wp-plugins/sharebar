@@ -1,5 +1,5 @@
 <?php
-	/*  Copyright 2010  Monjurul Dolon  (email : md@devgrow.com)
+	/*  Copyright 2010  Monji Dolon  (email : md@devgrow.com)
 	      Author Homepage: http://mdolon.com/   Author Blog: http://devgrow.com/
 
 		This program is free software; you can redistribute it and/or modify
@@ -118,7 +118,7 @@ jQuery(document).ready(function(){
 
 <h2>Custom Sharebar</h2>
 
-<h4 class="h4title"><div class="alignleft">By <a href="http://mdolon.com/" target="_blank">Monjurul Dolon</a> of <a href="http://devgrow.com/" target="_blank">DevGrow</a></div><div class="alignright"><a href="?page=Sharebar">Home</a> - <a href="?page=Sharebar&t=settings">Settings</a> - <a href="../wp-content/plugins/sharebar/readme.txt" target="_blank">Changelog</a> - <a href="http://devgrow.com/sharebar-wordpress-plugin/">Support</a> - <a href="?page=Sharebar&t=donate">Donate</a></div></h4>
+<h4 class="h4title"><div class="alignleft">By <a href="http://mdolon.com/" target="_blank">Monji Dolon</a> of <a href="http://devgrow.com/" target="_blank">DevGrow</a></div><div class="alignright"><a href="?page=Sharebar">Home</a> - <a href="?page=Sharebar&t=settings">Settings</a> - <a href="../wp-content/plugins/sharebar/readme.txt" target="_blank">Changelog</a> - <a href="http://devgrow.com/sharebar-wordpress-plugin/">Support</a> - <a href="?page=Sharebar&t=donate">Donate</a></div></h4>
 
 <?php if($task == 'edit' || $task == 'new'){?>
 
@@ -309,16 +309,16 @@ jQuery(document).ready(function(){
 	</div>
 	<div class="sb-divider"></div>
 	
-	<h3 class="alignleft">Available Buttons:</h3>
-	<div class="alignright">
-		<a href="?page=<?php echo $_GET['page']; ?>&t=reset" class="alignleft button right-button">Reset Buttons</a><a href="?page=Sharebar&t=new" class="button-primary alignleft right-button">Add New Button</a>
+	<div class="alignright" style="margin-top: 10px;">
+		<a href="?page=<?php echo $_GET['page']; ?>&t=reset" class="alignleft button right-button" style="margin-right: 10px;">Reset Buttons</a><a href="?page=Sharebar&t=new" class="button-primary alignleft right-button">Add New Button</a>
 	</div>
+	<h3 class="alignleft">Available Buttons:</h3>
 	
 	<form action="?page=<?php echo $_GET['page']; ?>" method="post">
 	<table id="sharebar-tl">
 		<thead><tr><th><a href="/" class="toggle-all">All</a></th><th class='leftj'>Name</th><th>Position</th><th>Big Button</th><th>Small Button</th><th>Actions</th></tr></thead>
 		<tbody>	
-		<?php $results = $wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."sharebar ORDER BY position, id ASC")); echo "\n";
+		<?php $results = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."sharebar ORDER BY position, id ASC"); echo "\n";
 		foreach($results as $result){
 			if(!$result->enabled){
 				$dis = " class='disabled'";
@@ -327,7 +327,7 @@ jQuery(document).ready(function(){
 				$dis = "";
 				$name = $result->name;
 			}
-			echo "\t\t<tr$dis><td><input type='checkbox' name='buttons[]' id='buttons' value='".$result->id."' class='checkbox c23' /></td><td class='leftj'>".$name."</td><td>".$result->position."<a href='?page=Sharebar&pos=moveup&id=".$result->id."'><img src='../wp-content/plugins/sharebar/images/up.gif'/></a><a href='?page=Sharebar&pos=movedown&id=".$result->id."'><img src='../wp-content/plugins/sharebar/images/down.gif'/></a></td><td>".$result->big."</td><td>".$result->small."</td><td><a href='?page=".$_GET['page']."&t=edit&id=".$result->id."'>Edit</a> | <a href='?page=".$_GET['page']."&t=delete&id=".$result->id."'>Delete</a></td></tr>\n";
+			echo "\t\t<tr$dis><td><input type='checkbox' name='buttons[]' id='buttons' value='".$result->id."' class='checkbox c23' /></td><td class='leftj'>".$name."</td><td>".$result->position."<a href='?page=Sharebar&pos=moveup&id=".$result->id."'><img src='" . plugins_url() ."/sharebar/images/up.gif'/></a><a href='?page=Sharebar&pos=movedown&id=".$result->id."'><img src='" . plugins_url() ."/sharebar/images/down.gif'/></a></td><td>".$result->big."</td><td>".$result->small."</td><td><a href='?page=".$_GET['page']."&t=edit&id=".$result->id."'>Edit</a> | <a href='?page=".$_GET['page']."&t=delete&id=".$result->id."'>Delete</a></td></tr>\n";
 		} ?>
 		</tbody>
 	</table>
