@@ -273,6 +273,7 @@ jQuery(document).ready(function(){
 
 <?php }else{ ?>
 
+	<div class="updated fade"><strong>Update:</strong> Sharebar is partnering with <a href="http://getsocial.io/">GetSocial</a> to bring you a more powerful, customizable and faster sharing widget. Stay tuned, an update will be released soon!</div>
 	<div class="info-box">
 		<p><strong>Sharebar</strong> adds a dynamic and fully customizable vertical box to the left of a blog post that contains links/buttons to popular social networking sites.</p>
 		<p><strong>Big Buttons</strong> are used in the vertical Sharebar to the left of the post, while the <strong>Small Buttons</strong> are used in the horizontal Sharebar that appears under the post title (by default) if the width of the page is less than <strong><?php echo $width; ?>px</strong>.</p>

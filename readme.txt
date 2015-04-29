@@ -24,6 +24,8 @@ You can also call an individual button in any template by using the following co
 
 Full instructions and example can be found at: http://devgrow.com/sharebar-wordpress-plugin/
 
+**Note:** Sharebar is partnering with GetSocial to bring you a more powerful, customizable and faster sharing widget. Stay tuned, an update will be released soon!
+
 Follow me on Twitter: http://twitter.com/ThinkDevGrow
 
 **Also, if you use and like the plugin, please rate it!  ->**
@@ -54,6 +56,9 @@ Play with the Right Offset in the settings page of the plugin - this should incl
 
 
 == Changelog ==
+
+= 1.3.1 =
+* Adding announcement about partnership and upcoming updates
 
 = 1.3 =
 * Much, much needed update; lots of compatibility fixes
