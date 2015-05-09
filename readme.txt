@@ -1,9 +1,8 @@
 === Sharebar ===
 Contributors: mdolon
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2G5ZENMCH62CN
 Tags: sharing, social networks, marketing, social media, sharebar, sharebox
 Requires at least: 2.0
-Tested up to: 3.0
+Tested up to: 4.2
 Stable tag: 2.2.9
 
 Sharebar adds a dynamic and fully customizable vertical box to the left of a blog post that contains links/buttons to popular social networking sites.
