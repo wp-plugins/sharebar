@@ -1,6 +1,6 @@
 === Sharebar ===
 Contributors: mdolon
-Tags: sharing, social networks, marketing, social media, sharebar, sharebox
+Tags: sharing, social networks, marketing, social media, sharebar, sharebox, sharethis, facebook share, twitter, pinterest, reddit, stumbleupon
 Requires at least: 2.0
 Tested up to: 4.2
 Stable tag: 2.2.9
@@ -9,6 +9,8 @@ Sharebar adds a dynamic and fully customizable vertical box to the left of a blo
 
 
 == Description ==
+
+[**To get advanced Share options, go here!**](http://bit.ly/1zqOXPs)
 
 Sharebar adds a dynamic and fully customizable vertical box to the left of a blog post that contains links/buttons to popular social networking sites.  For wide blogs, a vertical bar with popular sharing icons appears on the left of your post.  If the page is resized below 1000px (default), the vertical bar disappears and a horizontal sharebar appears under the post title.
 
@@ -21,11 +23,6 @@ When Auto mode (enabled in settings) is ON, the Sharebars are added automaticall
 
 You can also call an individual button in any template by using the following code (where size is either big or small): `<?php sharebar_button('name','size'); ?>`
 
-Full instructions and example can be found at: http://devgrow.com/sharebar-wordpress-plugin/
-
-**Note:** Sharebar is partnering with GetSocial to bring you a more powerful, customizable and faster sharing widget. Stay tuned, an update will be released soon!
-
-Follow me on Twitter: http://twitter.com/ThinkDevGrow
 
 **Also, if you use and like the plugin, please rate it!  ->**
 
