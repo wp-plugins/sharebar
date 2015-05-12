@@ -45,27 +45,26 @@ function sharebar_install(){
 		$facebook_small = "<div id=\"fb-root\"></div><script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = \"//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3\"; fjs.parentNode.insertBefore(js, fjs); }(document, \'script\', \'facebook-jssdk\'));</script><div class=\"fb-like\" data-width=\"80\" data-layout=\"button_count\" data-action=\"like\" data-show-faces=\"false\" data-share=\"false\"></div>";
 		$twitter = "<a class=\"twitter-share-button\" href=\"https://twitter.com/share\" data-count=\"vertical\">Tweet</a><script>window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src=\"https://platform.twitter.com/widgets.js\";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,\"script\",\"twitter-wjs\"));</script>";
 		$twitter_small = "<a class=\"twitter-share-button\" href=\"https://twitter.com/share\">Tweet</a><script>window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src=\"https://platform.twitter.com/widgets.js\";fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,\"script\",\"twitter-wjs\"));</script>";
-		$sharethis = "<script type=\"text/javascript\" src=\"http://w.sharethis.com/button/buttons.js\"></script><span class=\"st_facebook_vcount\" displayText=\"Share\"></span><span class=\"st_email\" displayText=\"Email\"></span><span class=\"st_sharethis\" displayText=\"Share\"></span>";
-		$sharethis_small = "<span class=\"st_facebook_hcount\" displayText=\"Share\"></span><span class=\"st_email\" displayText=\"Email\"></span><span class=\"st_sharethis\" displayText=\"Share\"></span>";
 		$reddit = "<script type=\"text/javascript\" src=\"http://reddit.com/static/button/button2.js\"></script>";
 		$reddit_small = "<script type=\"text/javascript\" src=\"http://reddit.com/static/button/button1.js\"></script>";
-		$dzone = "<script language=\"javascript\" src=\"http://widgets.dzone.com/links/widgets/zoneit.js\"></script>";
-		$dzone_small = "<script language=\"javascript\" src=\"http://widgets.dzone.com/links/widgets/zoneit.js\"></script>";
 		$stumbleupon = "<script src=\"http://www.stumbleupon.com/hostedbadge.php?s=5\"></script>";
 		$stumbleupon_small = "<script src=\"http://www.stumbleupon.com/hostedbadge.php?s=2\"></script>";
-		$designfloat = "<script type=\"text/javascript\">submit_url = \'[url]\';</script><script type=\"text/javascript\" src=\"http://www.designfloat.com/evb2/button.php\"></script>";
-		$designfloat_small = "<script type=\"text/javascript\">submit_url = \'[url]\';</script><script type=\"text/javascript\" src=\"http://www.designfloat.com/evb/button.php\"></script>";
+		$pinterest = "<a href=\"//www.pinterest.com/pin/create/button/\" data-pin-do=\"buttonBookmark\"  data-pin-color=\"red\" data-pin-height=\"28\"><img src=\"//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_red_28.png\" /></a>
+		<!-- Please call pinit.js only once per page -->
+		<script type=\"text/javascript\" async defer src=\"//assets.pinterest.com/js/pinit.js\"></script>";
+		$pinterest_small = "<a href=\"//www.pinterest.com/pin/create/button/\" data-pin-do=\"buttonBookmark\"  data-pin-color=\"red\"><img src=\"//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_red_20.png\" /></a>
+		<!-- Please call pinit.js only once per page -->
+		<script type=\"text/javascript\" async defer src=\"//assets.pinterest.com/js/pinit.js\"></script>";
 		$email = "<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>";
 		$email_small = "<a href=\"mailto:?subject=[url]\" class=\"sharebar-button email\">Email</a>";
 
 		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('1','1','facebook', '$facebook', '$facebook_small')");
 		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('1','2','twitter', '$twitter', '$twitter_small')");
-		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('0','3','sharethis', '$sharethis', '$sharethis_small')");
+		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('0','3','pinterest', '$pinterest', '$pinterest_small')");
+		
 		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('0','4','reddit', '$reddit', '$reddit_small')");
-		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('0','5','dzone', '$dzone', '$dzone_small')");
-		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('0','6','stumbleupon', '$stumbleupon', '$stumbleupon_small')");
-		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('0','7','designfloat', '$designfloat', '$designfloat_small')");
-		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('1','8','email', '$email', '$email_small')");
+		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('0','5','stumbleupon', '$stumbleupon', '$stumbleupon_small')");
+		$wpdb->query("INSERT INTO $table(enabled, position, name, big, small) VALUES ('1','6','email', '$email', '$email_small')");
 
 		add_option('sharebar_auto_posts', 1);
 		add_option('sharebar_auto_pages', 1);
@@ -117,7 +116,7 @@ function sharebar($print = true){
 		$str = '<ul id="sharebar" style="background:#'.$sbg.';border-color:#'.$sborder.';">';
 		$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."sharebar WHERE enabled=1 ORDER BY position, id ASC", null)); $str .= "\n";
 		foreach($results as $result){ $str .= '<li>'.sharebar_filter($result->big).'</li>'; }
-		if($credit) $str .= '<li class="credit"><a href="http://devgrow.com/sharebar" target="_blank">Sharebar</a></li>';
+		$str .= '<li class="credit"><a href="http://sumome.com/?src=wp_share" target="_blank">SumoMe</a></li>';
 		$str .= '</ul>';
 		if($print) echo $str; else return $str;
 	}

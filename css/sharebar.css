@@ -1,4 +1,4 @@
-body ul#sharebar { display: none; position: absolute; width: 65px; float: left; background: #fff; padding: 0; text-align: center; border: 1px solid #ccc; list-style: none; margin: 0; z-index: 99; }
+body ul#sharebar { display: none; position: absolute; width: 66px; float: left; background: #fff; padding: 0; text-align: center; border: 1px solid #ccc; list-style: none; margin: 0; z-index: 99; }
 body ul#sharebar li { display: block; margin: 5px; padding: 0; overflow: hidden; text-align: center; }
 body ul#sharebarx { display: none; list-style: none; width: 100%; float: left; margin: 0 0 10px; padding: 0; }
 body ul#sharebarx a { line-height: 14px; text-decoration: none; }

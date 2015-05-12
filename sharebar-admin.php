@@ -118,7 +118,10 @@ jQuery(document).ready(function(){
 
 <h2>Custom Sharebar</h2>
 
-<h4 class="h4title"><div class="alignleft">By <a href="http://mdolon.com/" target="_blank">Monji Dolon</a> of <a href="http://devgrow.com/" target="_blank">DevGrow</a></div><div class="alignright"><a href="?page=Sharebar">Home</a> - <a href="?page=Sharebar&t=settings">Settings</a> - <a href="../wp-content/plugins/sharebar/readme.txt" target="_blank">Changelog</a> - <a href="http://devgrow.com/sharebar-wordpress-plugin/">Support</a> - <a href="?page=Sharebar&t=donate">Donate</a></div></h4>
+<h4 class="h4title">
+	<div class="alignleft">By <a href="http://mdolon.com/" target="_blank">Monji</a> of <a href="http://devgrow.com/" target="_blank">DevGrow</a>and <a target="_blank" href="http://wordpress.org/plugins/sumome/">the (amazing) SumoMe WP Plugin</a> </div><div class="alignright"><a href="?page=Sharebar">Home</a> - <a href="?page=Sharebar&t=settings">Settings</a> - <a target="_blank" href="https://wordpress.org/plugins/sharebar/" target="_blank">Leave a :) Review</a>
+	</div>
+</h4>
 
 <?php if($task == 'edit' || $task == 'new'){?>
 
@@ -210,9 +213,9 @@ jQuery(document).ready(function(){
 		<p>
 			<input type="checkbox" name="horizontal" value="true" id="horizontal" class="checkbox" <?php if($horizontal) echo "checked"; ?> /><label for="horizontal">Display horizontal Sharebar if the page is resized to less than <em><?php echo $width; ?>px</em>?</label>
 		</p>
-		<p>
-			<input type="checkbox" name="credit" value="true" id="credit" class="checkbox" <?php if($credit) echo "checked"; ?> /><label for="credit">Display credit link back to the Sharebar plugin? If disabled, please consider <a href="?page=Sharebar&t=donate">donating</a>.</label>
-		</p>
+<!--		<p>
+<input type="checkbox" name="credit" value="true" id="credit" class="checkbox" <?php if($credit) echo "checked"; ?> /><label for="credit">Display credit link back to the Sharebar plugin? If disabled, please consider <a href="?page=Sharebar&t=donate">donating</a>.</label>
+		</p>-->
 		<p>
 			<select name="position" id="position">
 				<option value="left"<?php if($position == 'left') echo " selected"; ?>>Left </option>
@@ -301,11 +304,7 @@ jQuery(document).ready(function(){
 			$current = $credit ? 'Disable':'Enable';
 		?>
 		<ul>
-			<li>Link to us in the Sharebar <a href="?page=<?php echo $_GET['page']; ?>&t=linkback" class="button"><?php echo $current; ?></a></li>
-			<li>Send out a <a href="http://twitter.com/home?status=Just installed the Sharebar plugin by @mdolon - check it out! http://bit.ly/c98znW" target="_blank" class="button">Tweet</a> to your friends</li>
-			<li>Give us a <a href="http://wordpress.org/extend/plugins/sharebar/" target="_blank" class="button">perfect rating</a></li>
-			<li>Buy us a coffee by <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2G5ZENMCH62CN" class="button">donating</a></li>
-			<li>Follow us on <a href="http://twitter.com/ThinkDevGrow" target="_blank">Twitter</a> &amp; visit our <a href="http://devgrow.com/" target="_blank">blog</a></li>
+			<li>Check out our  <a target="_blank" href="https://wordpress.org/plugins/sumome" class="button">SumoMe Plugin</a></li>
 		</ul>
 	</div>
 	<div class="sb-divider"></div>
