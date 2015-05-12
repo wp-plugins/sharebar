@@ -119,7 +119,7 @@ jQuery(document).ready(function(){
 <h2>Custom Sharebar</h2>
 
 <h4 class="h4title">
-	<div class="alignleft">By <a href="http://mdolon.com/" target="_blank">Monji</a> of <a href="http://devgrow.com/" target="_blank">DevGrow</a>and <a target="_blank" href="http://wordpress.org/plugins/sumome/">the (amazing) SumoMe WP Plugin</a> </div><div class="alignright"><a href="?page=Sharebar">Home</a> - <a href="?page=Sharebar&t=settings">Settings</a> - <a target="_blank" href="https://wordpress.org/plugins/sharebar/" target="_blank">Leave a :) Review</a>
+	<div class="alignleft">By <a href="http://mdolon.com/" target="_blank">Monji</a> of <a href="http://devgrow.com/" target="_blank">DevGrow</a> and <a target="_blank" href="http://wordpress.org/plugins/sumome/">the (amazing) SumoMe WP Plugin</a> </div><div class="alignright"><a href="?page=Sharebar">Home</a> - <a href="?page=Sharebar&t=settings">Settings</a> - <a target="_blank" href="https://wordpress.org/plugins/sharebar/" target="_blank">Leave a :) Review</a>
 	</div>
 </h4>
 
@@ -344,7 +344,7 @@ jQuery(document).ready(function(){
 		</p>
 	</div>
 	<div class="alignright">
-		<p><small style="color:#aaa;">grey = disabled / white = enabled</small></p>
+		<p><small style="color:black;font-weight:bold;">grey = disabled / white = enabled</small></p>
 	</div>
 	</form>
 <?php } ?>
