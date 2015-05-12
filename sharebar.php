@@ -116,7 +116,7 @@ function sharebar($print = true){
 		$str = '<ul id="sharebar" style="background:#'.$sbg.';border-color:#'.$sborder.';">';
 		$results = $wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."sharebar WHERE enabled=1 ORDER BY position, id ASC", null)); $str .= "\n";
 		foreach($results as $result){ $str .= '<li>'.sharebar_filter($result->big).'</li>'; }
-		$str .= '<li class="credit"><a href="http://sumome.com/?src=wp_share" target="_blank">SumoMe</a></li>';
+		$str .= '<li class="credit"><a rel="nofollow" href="http://sumome.com/?src=wp_share" target="_blank">SumoMe</a></li>';
 		$str .= '</ul>';
 		if($print) echo $str; else return $str;
 	}
