@@ -119,7 +119,7 @@ jQuery(document).ready(function(){
 <h2>Custom Sharebar</h2>
 
 <h4 class="h4title">
-	<div class="alignleft">By <a href="http://mdolon.com/" target="_blank">Monji</a> of <a href="http://devgrow.com/" target="_blank">DevGrow</a> and <a target="_blank" href="http://wordpress.org/plugins/sumome/">the (amazing) SumoMe WP Plugin</a> </div><div class="alignright"><a href="?page=Sharebar">Home</a> - <a href="?page=Sharebar&t=settings">Settings</a> - <a target="_blank" href="https://wordpress.org/plugins/sharebar/" target="_blank">Leave a :) Review</a>
+	<div class="alignleft">By <a href="http://mdolon.com/" target="_blank">Monji</a> of <a href="http://devgrow.com/" target="_blank">DevGrow</a> and <a target="_blank" href="http://wordpress.org/plugins/sumome/">the (amazing) SumoMe WP Plugin</a> </div><div class="alignright"><a href="?page=Sharebar">Home</a> - <a href="?page=Sharebar&t=settings">Settings</a> 
 	</div>
 </h4>
 
@@ -304,7 +304,9 @@ jQuery(document).ready(function(){
 			$current = $credit ? 'Disable':'Enable';
 		?>
 		<ul>
-			<li>Check out our  <a target="_blank" href="https://wordpress.org/plugins/sumome" class="button">SumoMe Plugin</a></li>
+			<li>1- Check out our  <a target="_blank" href="https://wordpress.org/plugins/sumome">SumoMe Plugin</a></li>
+			<li>2- <a target="_blank" href="https://wordpress.org/support/view/plugin-reviews/sharebar">Leave a :) review</a></li>
+			<li>3- Install our  <a target="_blank" href="https://wordpress.org/plugins/google-analyticator/">Google Analytics Plugin</a></li>
 		</ul>
 	</div>
 	<div class="sb-divider"></div>
