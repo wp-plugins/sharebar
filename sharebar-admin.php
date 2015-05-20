@@ -213,9 +213,9 @@ jQuery(document).ready(function(){
 		<p>
 			<input type="checkbox" name="horizontal" value="true" id="horizontal" class="checkbox" <?php if($horizontal) echo "checked"; ?> /><label for="horizontal">Display horizontal Sharebar if the page is resized to less than <em><?php echo $width; ?>px</em>?</label>
 		</p>
-<!--		<p>
-<input type="checkbox" name="credit" value="true" id="credit" class="checkbox" <?php if($credit) echo "checked"; ?> /><label for="credit">Display credit link back to the Sharebar plugin? If disabled, please consider <a href="?page=Sharebar&t=donate">donating</a>.</label>
-		</p>-->
+		<p>
+<input type="checkbox" name="credit" value="true" id="credit" class="checkbox" <?php if($credit) echo "checked"; ?> /><label for="credit">Display maker credit link? </label>
+		</p>
 		<p>
 			<select name="position" id="position">
 				<option value="left"<?php if($position == 'left') echo " selected"; ?>>Left </option>
